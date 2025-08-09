@@ -2,18 +2,19 @@
 	import * as d3 from 'd3';
 
 	type Props = {
-		downloadDist: { range: string; percent: number }[];
-		uploadDist: { range: string; percent: number }[];
-		label: string;
+		data1: { range: string; percent: number }[];
+		data2: { range: string; percent: number }[];
+		label1: string;
+		label2: string;
 	};
 
-	let { downloadDist, uploadDist, label }: Props = $props();
+	let { data1, data2, label1, label2 }: Props = $props();
 
 	let container: HTMLDivElement;
 
 	function renderHistogram(
-		downloadDist: { range: string; percent: number }[],
-		uploadDist: { range: string; percent: number }[]
+		data1: { range: string; percent: number }[],
+		data2: { range: string; percent: number }[]
 	) {
 		if (!container) return;
 		container.innerHTML = '';
@@ -30,14 +31,14 @@
 
 		// Get all unique ranges
 		const allRanges = Array.from(
-			new Set([...downloadDist.map((d) => d.range), ...uploadDist.map((d) => d.range)])
+			new Set([...data1.map((d) => d.range), ...data2.map((d) => d.range)])
 		);
 
 		const x0 = d3.scaleBand().domain(allRanges).range([0, width]).padding(0.2);
 
 		const x1 = d3
 			.scaleBand()
-			.domain(['Download', 'Upload'])
+			.domain(data2.length ? [label1, label2] : [label1])
 			.range([0, x0.bandwidth()])
 			.padding(0.05);
 
@@ -46,8 +47,8 @@
 			.domain([
 				0,
 				Math.max(
-					d3.max(downloadDist, (d) => d.percent) || 0,
-					d3.max(uploadDist, (d) => d.percent) || 0,
+					d3.max(data1, (d) => d.percent) || 0,
+					data2.length ? d3.max(data2, (d) => d.percent) || 0 : 0,
 					100
 				)
 			])
@@ -70,10 +71,10 @@
 
 		// Prepare data for grouped bars
 		const dataMap = new Map();
-		downloadDist.forEach((d) => {
+		data1.forEach((d) => {
 			dataMap.set(d.range, { download: d.percent, upload: 0 });
 		});
-		uploadDist.forEach((d) => {
+		data2.forEach((d) => {
 			if (!dataMap.has(d.range)) {
 				dataMap.set(d.range, { download: 0, upload: d.percent });
 			} else {
@@ -81,7 +82,7 @@
 			}
 		});
 
-		const colors = { Download: '#2563eb', Upload: '#22c55e' };
+		const colors = { [label1]: '#2563eb', [label2]: '#22c55e' };
 
 		svg
 			.selectAll('g.bar-group')
@@ -92,8 +93,8 @@
 			.attr('transform', (d) => `translate(${x0(d)},0)`)
 			.selectAll('rect')
 			.data((range) => [
-				{ key: 'Download', value: dataMap.get(range)?.download || 0 },
-				{ key: 'Upload', value: dataMap.get(range)?.upload || 0 }
+				{ key: label1, value: dataMap.get(range)?.download || 0 },
+				{ key: label2, value: dataMap.get(range)?.upload || 0 }
 			])
 			.enter()
 			.append('rect')
@@ -101,18 +102,19 @@
 			.attr('y', (d) => y(d.value))
 			.attr('width', x1.bandwidth())
 			.attr('height', (d) => height - y(d.value))
-			.attr('fill', (d) => colors[d.key as 'Download' | 'Upload']);
+			.attr('fill', (d) => colors[d.key]);
 
 		// Add legend
 		const legend = svg.append('g').attr('transform', `translate(${width - 120}, 0)`);
-		['Download', 'Upload'].forEach((key, i) => {
+		const legendLabels = data2.length ? [label1, label2] : [label1];
+		legendLabels.forEach((key, i) => {
 			legend
 				.append('rect')
 				.attr('x', 0)
 				.attr('y', i * 20)
 				.attr('width', 16)
 				.attr('height', 16)
-				.attr('fill', colors[key as 'Download' | 'Upload']);
+				.attr('fill', colors[key]);
 			legend
 				.append('text')
 				.attr('x', 22)
@@ -123,8 +125,8 @@
 	}
 
 	$effect(() => {
-		if (downloadDist && downloadDist.length && uploadDist && uploadDist.length) {
-			renderHistogram(downloadDist, uploadDist);
+		if (data1 && data1.length) {
+			renderHistogram(data1, data2 || []);
 		}
 	});
 </script>

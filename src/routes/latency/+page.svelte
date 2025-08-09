@@ -17,8 +17,7 @@
 	});
 
 	let destinations: Destination[] = $state([]);
-	let downloadDist = $state<{ range: string; percent: number }[]>([]);
-	let uploadDist = $state<{ range: string; percent: number }[]>([]);
+	let data = $state<{ range: string; percent: number }[]>([]);
 	let sessionCount = $state(0);
 	let status: 'idle' | 'loading-destinations' | 'loading-results' | 'error-results' =
 		$state('idle');
@@ -76,10 +75,9 @@
 			return;
 		}
 		status = 'loading-results';
-		uploadDist = [];
-		downloadDist = [];
+		data = [];
 		sessionCount = 0;
-		let url = `${API_BASE_URL}/serviceLevel?startDate=${formData.startDate}&endDate=${formData.endDate}`;
+		let url = `${API_BASE_URL}/rtt?startDate=${formData.startDate}&endDate=${formData.endDate}`;
 		if (formData.country) {
 			url += `&country=${formData.country}`;
 		}
@@ -108,17 +106,12 @@
 			}
 			const result: {
 				session_count: number;
-				download_mbps_distribution: Record<string, string>;
-				upload_mbps_distribution: Record<string, string>;
+				rtt_distribution_ms: Record<string, string>;
 			} = await response.json();
 			console.log('Form submitted successfully:', result);
 			// Prepare data for histogram
 			sessionCount = result.session_count;
-			downloadDist = Object.entries(result.download_mbps_distribution).map(([range, percent]) => ({
-				range,
-				percent: parseFloat(percent)
-			}));
-			uploadDist = Object.entries(result.upload_mbps_distribution).map(([range, percent]) => ({
+			data = Object.entries(result.rtt_distribution_ms).map(([range, percent]) => ({
 				range,
 				percent: parseFloat(percent)
 			}));
@@ -133,7 +126,7 @@
 
 <Card.Root class="mb-4">
 	<Card.Content>
-		<h1 class="mb-6 text-2xl">Répartition des débits par session</h1>
+		<h1 class="mb-6 text-2xl">Analyse des délais d'aller-retour (RTT)</h1>
 
 		<form
 			action=""
@@ -226,7 +219,7 @@
 {:else if sessionCount > 0}
 	<Card.Root>
 		<Card.Content>
-			<Histogram data1={downloadDist} data2={uploadDist} label1="Download" label2="Upload" />
+			<Histogram data1={data} data2={[]} label1="Delay" label2="" />
 		</Card.Content>
 	</Card.Root>
 {/if}
