@@ -12,31 +12,29 @@
 
 	import * as Sidebar from '$lib/components/ui/sidebar';
 
-	const baseUrl = '/app';
-
 	const routes = [
 		{
-			title: 'Répartition des débits par session',
+			title: 'Débits par session',
 			url: '/sessions',
 			icon: BoxIcon
 		},
 		{
-			title: "Analyse des délais d'aller-retour",
+			title: "Délais d'aller-retour",
 			url: '/latency',
 			icon: CircleUserIcon
 		},
 		{
-			title: "Analyse des délais d'acquittement",
+			title: "Délais d'acquittement",
 			url: '/acknowledgment',
 			icon: SettingsIcon
 		},
 		{
-			title: 'Analyse des flux simultanés (Streams QUIC)',
+			title: 'Flux simultanés',
 			url: '/streams',
 			icon: SettingsIcon
 		},
 		{
-			title: 'Bande passante par fournisseur télécom (ISP)',
+			title: 'Bande passante',
 			url: '/isp',
 			icon: BookDownIcon
 		}

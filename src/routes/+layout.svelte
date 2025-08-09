@@ -10,7 +10,7 @@
 	<AppSidebar />
 	<main class="mx-auto grid w-full grid-rows-[auto_1fr] gap-2 p-4">
 		<Sidebar.Trigger />
-		<div>
+		<div class="mx-auto w-full max-w-4xl">
 			{@render children?.()}
 		</div>
 	</main>
