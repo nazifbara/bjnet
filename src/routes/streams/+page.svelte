@@ -2,12 +2,14 @@
 	import { Loader2Icon } from '@lucide/svelte';
 	import type { FormData } from '$lib/types';
 	import Histogram from '$lib/components/histogram.svelte';
+	import DonutChart from '$lib/components/donut-chart.svelte';
 	import * as Card from '$lib/components/ui/card';
 	import FilterForm from '$lib/components/filter-form.svelte';
-	import { fetchAckDelayData } from '$lib/api';
+	import { fetchStreamData } from '$lib/api';
 
 	let data = $state<{ range: string; percent: number }[]>([]);
 	let count = $state(0);
+	let avgConcurrency = $state(0);
 	let status: 'idle' | 'loading-destinations' | 'loading-results' | 'error-results' =
 		$state('idle');
 	let errorMessage: string | null = $state(null);
@@ -17,11 +19,13 @@
 		status = 'loading-results';
 		data = [];
 		count = 0;
+		avgConcurrency = 0;
 
 		try {
-			const result = await fetchAckDelayData(formData);
-			count = result.ack_count;
-			data = Object.entries(result.ack_delay_distribution_ms).map(([range, percent]) => ({
+			const result = await fetchStreamData(formData);
+			count = result.session_count;
+			avgConcurrency = result.avg_concurrency_overall;
+			data = Object.entries(result.stream_concurrency_distribution).map(([range, percent]) => ({
 				range,
 				percent: parseFloat(percent)
 			}));
@@ -38,7 +42,7 @@
 	}
 </script>
 
-<FilterForm title="Analyse des délais d'acquittement" on:submit={handleSubmit} />
+<FilterForm title="Analyse des flux par connexion" on:submit={handleSubmit} />
 
 {#if status === 'loading-results'}
 	<Loader2Icon class="mx-auto animate-spin" />
@@ -51,9 +55,18 @@
 		</Card.Content>
 	</Card.Root>
 {:else if count > 0}
-	<Card.Root>
-		<Card.Content>
-			<Histogram data1={data} data2={[]} label1="Ack" label2="" />
-		</Card.Content>
-	</Card.Root>
+	<div class="space-y-4">
+		<Card.Root>
+			<Card.Content>
+				<Histogram data1={data} data2={[]} label1="Streams" label2="" />
+			</Card.Content>
+		</Card.Root>
+		<Card.Root>
+			<Card.Content>
+				<div class="flex justify-center">
+					<DonutChart value={avgConcurrency} label="Flux" />
+				</div>
+			</Card.Content>
+		</Card.Root>
+	</div>
 {/if}
