@@ -4,7 +4,7 @@
 	import Histogram from '$lib/components/histogram.svelte';
 	import * as Card from '$lib/components/ui/card';
 	import FilterForm from '$lib/components/filter-form.svelte';
-	import { fetchRTTData } from '$lib/api';
+	import { fetchAckDelay } from '$lib/api';
 
 	let data = $state<{ range: string; percent: number }[]>([]);
 	let count = $state(0);
@@ -19,9 +19,9 @@
 		count = 0;
 
 		try {
-			const result = await fetchRTTData(formData);
-			count = result.session_count;
-			data = Object.entries(result.rtt_distribution_ms).map(([range, percent]) => ({
+			const result = await fetchAckDelay(formData);
+			count = result.ack_count;
+			data = Object.entries(result.ack_delay_distribution_ms).map(([range, percent]) => ({
 				range,
 				percent: parseFloat(percent)
 			}));
