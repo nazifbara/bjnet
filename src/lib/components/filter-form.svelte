@@ -10,9 +10,10 @@
 
 	type Props = {
 		title: string;
+		ips?: boolean;
 	};
 
-	let { title }: Props = $props();
+	let { title, ips = false }: Props = $props();
 
 	const formData: FormData = $state({
 		startDate: '',
@@ -102,58 +103,60 @@
 				bind:value={formData.startDate}
 			/>
 			<Input type="date" name="endDate" placeholder="Date de fin" bind:value={formData.endDate} />
-			<Select.Root
-				type="single"
-				name="country"
-				bind:value={formData.country}
-				disabled={!countries.length}
-			>
-				<Select.Trigger>
-					{#if status === 'loading-destinations'}
-						<Loader2Icon class="animate-spin" />
-					{:else}
-						{countries.find((f) => f.value === formData.country)?.label ?? 'Pays'}
-					{/if}
-				</Select.Trigger>
-				<Select.Content>
-					{#each countries as country}
-						<Select.Item value={country.value} label={country.label} />
-					{/each}
-				</Select.Content>
-			</Select.Root>
-			<Select.Root
-				type="single"
-				name="region"
-				bind:value={formData.region}
-				disabled={!regions.length}
-			>
-				<Select.Trigger>
-					{#if status === 'loading-destinations'}
-						<Loader2Icon class="animate-spin" />
-					{:else}
-						{regions.find((f) => f.value === formData.region)?.label ?? 'Région'}
-					{/if}
-				</Select.Trigger>
-				<Select.Content>
-					{#each regions as region}
-						<Select.Item value={region.value} label={region.label} />
-					{/each}
-				</Select.Content>
-			</Select.Root>
-			<Select.Root type="single" name="city" bind:value={formData.city} disabled={!cities.length}>
-				<Select.Trigger>
-					{#if status === 'loading-destinations'}
-						<Loader2Icon class="animate-spin" />
-					{:else}
-						{regions.find((f) => f.value === formData.city)?.label ?? 'Ville'}
-					{/if}
-				</Select.Trigger>
-				<Select.Content>
-					{#each cities as city}
-						<Select.Item value={city.value} label={city.label} />
-					{/each}
-				</Select.Content>
-			</Select.Root>
+			{#if !ips}
+				<Select.Root
+					type="single"
+					name="country"
+					bind:value={formData.country}
+					disabled={!countries.length}
+				>
+					<Select.Trigger>
+						{#if status === 'loading-destinations'}
+							<Loader2Icon class="animate-spin" />
+						{:else}
+							{countries.find((f) => f.value === formData.country)?.label ?? 'Pays'}
+						{/if}
+					</Select.Trigger>
+					<Select.Content>
+						{#each countries as country}
+							<Select.Item value={country.value} label={country.label} />
+						{/each}
+					</Select.Content>
+				</Select.Root>
+				<Select.Root
+					type="single"
+					name="region"
+					bind:value={formData.region}
+					disabled={!regions.length}
+				>
+					<Select.Trigger>
+						{#if status === 'loading-destinations'}
+							<Loader2Icon class="animate-spin" />
+						{:else}
+							{regions.find((f) => f.value === formData.region)?.label ?? 'Région'}
+						{/if}
+					</Select.Trigger>
+					<Select.Content>
+						{#each regions as region}
+							<Select.Item value={region.value} label={region.label} />
+						{/each}
+					</Select.Content>
+				</Select.Root>
+				<Select.Root type="single" name="city" bind:value={formData.city} disabled={!cities.length}>
+					<Select.Trigger>
+						{#if status === 'loading-destinations'}
+							<Loader2Icon class="animate-spin" />
+						{:else}
+							{regions.find((f) => f.value === formData.city)?.label ?? 'Ville'}
+						{/if}
+					</Select.Trigger>
+					<Select.Content>
+						{#each cities as city}
+							<Select.Item value={city.value} label={city.label} />
+						{/each}
+					</Select.Content>
+				</Select.Root>
+			{/if}
 			<Button type="submit">Rechercher</Button>
 		</form>
 	</Card.Content>

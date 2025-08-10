@@ -134,3 +134,26 @@ export async function fetchStreamData(formData: FormData) {
 		stream_concurrency_distribution: Record<string, string>;
 	};
 }
+
+export async function fetchBandwithData(formData: FormData) {
+	const url = `${API_BASE_URL}/bandwidthByISP?startDate=${formData.startDate}&endDate=${formData.endDate}`;
+
+	const response = await fetch(url, {
+		method: 'GET',
+		headers: {
+			'Content-Type': 'application/json',
+			'x-api-key': 'bjnet_web_dev'
+		}
+	});
+
+	if (response.status === 404) {
+		throw new Error('No data found for the given criteria');
+	}
+	if (!response.ok) {
+		throw new Error(`HTTP error! status: ${response.status}`);
+	}
+
+	return (await response.json()) as {
+		results: { isp: string; sessions: number; upload_kbps: number; download_kbps: number }[];
+	};
+}
