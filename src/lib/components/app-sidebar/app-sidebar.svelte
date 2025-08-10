@@ -3,10 +3,14 @@
 		BookDownIcon,
 		CircleUserIcon,
 		SettingsIcon,
-		LogOutIcon,
-		BoxesIcon,
 		BoxIcon,
-		UsersIcon
+		UsersIcon,
+		PodcastIcon,
+		ArrowBigDownIcon,
+		ArrowUpDown,
+		LoaderIcon,
+		ShieldQuestionIcon,
+		EthernetPortIcon
 	} from '@lucide/svelte';
 	import { page } from '$app/state';
 
@@ -16,27 +20,27 @@
 		{
 			title: 'Débits par session',
 			url: '/sessions',
-			icon: BoxIcon
+			icon: ArrowUpDown
 		},
 		{
 			title: "Délais d'aller-retour",
 			url: '/latency',
-			icon: CircleUserIcon
+			icon: LoaderIcon
 		},
 		{
 			title: "Délais d'acquittement",
 			url: '/acknowledgment',
-			icon: SettingsIcon
+			icon: ShieldQuestionIcon
 		},
 		{
 			title: 'Flux simultanés',
 			url: '/streams',
-			icon: SettingsIcon
+			icon: PodcastIcon
 		},
 		{
 			title: 'Bande passante',
 			url: '/isp',
-			icon: BookDownIcon
+			icon: EthernetPortIcon
 		}
 	];
 </script>
