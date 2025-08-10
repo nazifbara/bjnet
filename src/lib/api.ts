@@ -7,31 +7,36 @@ async function apiFetch<T>(
 	endpoint: string,
 	formData: FormData,
 	includeLocation = true
-): Promise<T> {
+): Promise<T | null> {
 	let url = `${API_BASE_URL}/${endpoint}?startDate=${formData.startDate}&endDate=${formData.endDate}`;
 
-	if (includeLocation) {
-		if (formData.country) url += `&country=${formData.country}`;
-		if (formData.region) url += `&region=${formData.region}`;
-		if (formData.city) url += `&city=${formData.city}`;
-	}
-
-	const response = await fetch(url, {
-		method: 'GET',
-		headers: {
-			'Content-Type': 'application/json',
-			'x-api-key': API_KEY
+	try {
+		if (includeLocation) {
+			if (formData.country) url += `&country=${formData.country}`;
+			if (formData.region) url += `&region=${formData.region}`;
+			if (formData.city) url += `&city=${formData.city}`;
 		}
-	});
 
-	if (response.status === 404) {
-		throw new Error('No data found for the given criteria');
-	}
-	if (!response.ok) {
-		throw new Error(`HTTP error! status: ${response.status}`);
-	}
+		const response = await fetch(url, {
+			method: 'GET',
+			headers: {
+				'Content-Type': 'application/json',
+				'x-api-key': API_KEY
+			}
+		});
 
-	return response.json();
+		if (response.status === 404) {
+			return null;
+		}
+		if (!response.ok) {
+			throw new Error(`HTTP error! status: ${response.status}`);
+		}
+
+		return response.json();
+	} catch (error) {
+		console.error(error);
+		return null;
+	}
 }
 
 interface ServiceLevelResponse {
@@ -40,7 +45,9 @@ interface ServiceLevelResponse {
 	upload_mbps_distribution: Record<string, string>;
 }
 
-export async function fetchServiceLevelData(formData: FormData): Promise<ServiceLevelResponse> {
+export async function fetchServiceLevelData(
+	formData: FormData
+): Promise<ServiceLevelResponse | null> {
 	return apiFetch<ServiceLevelResponse>('serviceLevel', formData);
 }
 
@@ -49,7 +56,7 @@ interface RTTResponse {
 	rtt_distribution_ms: Record<string, string>;
 }
 
-export async function fetchRTTData(formData: FormData): Promise<RTTResponse> {
+export async function fetchRTTData(formData: FormData): Promise<RTTResponse | null> {
 	return apiFetch<RTTResponse>('rtt', formData);
 }
 
@@ -58,7 +65,7 @@ interface AckDelayResponse {
 	ack_delay_distribution_ms: Record<string, string>;
 }
 
-export async function fetchAckDelayData(formData: FormData): Promise<AckDelayResponse> {
+export async function fetchAckDelayData(formData: FormData): Promise<AckDelayResponse | null> {
 	return apiFetch<AckDelayResponse>('ackDelay', formData);
 }
 
@@ -68,7 +75,7 @@ interface StreamResponse {
 	stream_concurrency_distribution: Record<string, string>;
 }
 
-export async function fetchStreamData(formData: FormData): Promise<StreamResponse> {
+export async function fetchStreamData(formData: FormData): Promise<StreamResponse | null> {
 	return apiFetch<StreamResponse>('streams', formData);
 }
 
@@ -83,6 +90,6 @@ interface BandwidthResponse {
 	results: BandwidthResult[];
 }
 
-export async function fetchBandwithData(formData: FormData): Promise<BandwidthResponse> {
+export async function fetchBandwithData(formData: FormData): Promise<BandwidthResponse | null> {
 	return apiFetch<BandwidthResponse>('bandwidthByISP', formData, false);
 }

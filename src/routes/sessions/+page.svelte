@@ -13,8 +13,7 @@
 		$state('idle');
 	let errorMessage: string | null = $state(null);
 
-	async function handleSubmit(event: CustomEvent<{ formData: FormData; status: string }>) {
-		const { formData } = event.detail;
+	async function handleSubmit(formData: FormData) {
 		status = 'loading-results';
 		downloadDist = [];
 		uploadDist = [];
@@ -22,37 +21,46 @@
 
 		try {
 			const result = await fetchServiceLevelData(formData);
+			if (!result) {
+				status = 'error-results';
+				errorMessage = 'Aucune donnée disponible pour cette période';
+				return;
+			}
 			sessionCount = result.session_count;
-			downloadDist = Object.entries(result.download_mbps_distribution).map(([range, percent]) => ({
-				range,
-				percent: parseFloat(percent)
-			}));
-			uploadDist = Object.entries(result.upload_mbps_distribution).map(([range, percent]) => ({
-				range,
-				percent: parseFloat(percent)
-			}));
+			downloadDist = Object.entries(result.download_mbps_distribution || {}).map(
+				([range, percent]) => ({
+					range,
+					percent: parseFloat(percent)
+				})
+			);
+			uploadDist = Object.entries(result.upload_mbps_distribution || {}).map(
+				([range, percent]) => ({
+					range,
+					percent: parseFloat(percent)
+				})
+			);
 		} catch (error) {
 			console.error('Error submitting form:', error);
 			status = 'error-results';
 			errorMessage =
-				error instanceof Error
-					? error.message
-					: 'Une erreur est survenue lors de la récupération des données';
+				error instanceof Error && error.message !== 'No data found for the given criteria'
+					? 'Une erreur est survenue lors de la récupération des données.'
+					: 'Aucune donnée disponible pour cette période';
 		} finally {
 			status = 'idle';
 		}
 	}
 </script>
 
-<FilterForm title="Répartition des débits par session" on:submit={handleSubmit} />
+<FilterForm title="Répartition des débits par session" onsubmit={handleSubmit} />
 
 {#if status === 'loading-results'}
 	<Loader2Icon class="mx-auto animate-spin" />
-{:else if status === 'error-results'}
+{:else if errorMessage}
 	<Card.Root>
 		<Card.Content>
 			<p class="text-destructive">
-				{errorMessage || 'Une erreur est survenue lors de la récupération des données.'}
+				{errorMessage}
 			</p>
 		</Card.Content>
 	</Card.Root>

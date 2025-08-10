@@ -11,9 +11,10 @@
 	type Props = {
 		title: string;
 		ips?: boolean;
+		onsubmit: (formData: FormData) => void;
 	};
 
-	let { title, ips = false }: Props = $props();
+	let { title, ips = false, onsubmit }: Props = $props();
 
 	const formData: FormData = $state({
 		startDate: '',
@@ -73,14 +74,12 @@
 		}
 	});
 
-	const dispatch = createEventDispatcher();
-
 	function handleSubmit() {
 		if (!formData.startDate || !formData.endDate) {
 			console.error('Start date and end date are required');
 			return;
 		}
-		dispatch('submit', { formData, status: 'loading-results' });
+		onsubmit(formData);
 	}
 </script>
 

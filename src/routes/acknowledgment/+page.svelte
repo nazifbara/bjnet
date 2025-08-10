@@ -12,16 +12,20 @@
 		$state('idle');
 	let errorMessage: string | null = $state(null);
 
-	async function handleSubmit(event: CustomEvent<{ formData: FormData; status: string }>) {
-		const { formData } = event.detail;
+	async function handleSubmit(formData: FormData) {
 		status = 'loading-results';
 		data = [];
 		count = 0;
 
 		try {
 			const result = await fetchAckDelayData(formData);
+			if (!result) {
+				status = 'error-results';
+				errorMessage = 'Aucune donnée disponible pour cette période';
+				return;
+			}
 			count = result.ack_count;
-			data = Object.entries(result.ack_delay_distribution_ms).map(([range, percent]) => ({
+			data = Object.entries(result.ack_delay_distribution_ms || {}).map(([range, percent]) => ({
 				range,
 				percent: parseFloat(percent)
 			}));
@@ -29,24 +33,24 @@
 			console.error('Error submitting form:', error);
 			status = 'error-results';
 			errorMessage =
-				error instanceof Error
-					? error.message
-					: 'Une erreur est survenue lors de la récupération des données';
+				error instanceof Error && error.message !== 'No data found for the given criteria'
+					? 'Une erreur est survenue lors de la récupération des données.'
+					: 'Aucune donnée disponible pour cette période';
 		} finally {
 			status = 'idle';
 		}
 	}
 </script>
 
-<FilterForm title="Analyse des délais d'acquittement" on:submit={handleSubmit} />
+<FilterForm title="Analyse des délais d'acquittement" onsubmit={handleSubmit} />
 
 {#if status === 'loading-results'}
 	<Loader2Icon class="mx-auto animate-spin" />
-{:else if status === 'error-results'}
+{:else if errorMessage}
 	<Card.Root>
 		<Card.Content>
 			<p class="text-destructive">
-				{errorMessage || 'Une erreur est survenue lors de la récupération des données.'}
+				{errorMessage}
 			</p>
 		</Card.Content>
 	</Card.Root>

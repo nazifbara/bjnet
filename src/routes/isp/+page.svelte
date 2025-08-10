@@ -18,37 +18,40 @@
 		$state('idle');
 	let errorMessage: string | null = $state(null);
 
-	async function handleSubmit(event: CustomEvent<{ formData: FormData; status: string }>) {
-		const { formData } = event.detail;
+	async function handleSubmit(formData: FormData) {
 		status = 'loading-results';
 		data = [];
 
 		try {
 			const result = await fetchBandwithData(formData);
-			data = result.results;
-			console.log({ data });
+			if (!result) {
+				status = 'error-results';
+				errorMessage = 'Aucune donnée disponible pour cette période';
+				return;
+			}
+			data = result.results || [];
 		} catch (error) {
 			console.error('Error submitting form:', error);
 			status = 'error-results';
 			errorMessage =
-				error instanceof Error
-					? error.message
-					: 'Une erreur est survenue lors de la récupération des données';
+				error instanceof Error && error.message !== 'No data found for the given criteria'
+					? 'Une erreur est survenue lors de la récupération des données.'
+					: 'Aucune donnée disponible pour cette période';
 		} finally {
 			status = 'idle';
 		}
 	}
 </script>
 
-<FilterForm title="Débits moyens par FAI" on:submit={handleSubmit} ips />
+<FilterForm title="Débits moyens par FAI" onsubmit={handleSubmit} ips />
 
 {#if status === 'loading-results'}
 	<Loader2Icon class="mx-auto animate-spin" />
-{:else if status === 'error-results'}
+{:else if errorMessage}
 	<Card.Root>
 		<Card.Content>
 			<p class="text-destructive">
-				{errorMessage || 'Une erreur est survenue lors de la récupération des données.'}
+				{errorMessage}
 			</p>
 		</Card.Content>
 	</Card.Root>
