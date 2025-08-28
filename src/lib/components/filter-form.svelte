@@ -14,7 +14,7 @@
 		onsubmit: (formData: FormData) => void;
 	};
 
-	let { title, ips = false, onsubmit }: Props = $props();
+	let { ips = false, onsubmit }: Props = $props();
 
 	const formData: FormData = $state({
 		startDate: '',
@@ -84,9 +84,15 @@
 </script>
 
 <Card.Root class="mb-4">
+	<Card.Header>
+		<Card.Title>BJNet Monitor</Card.Title>
+		<Card.Description
+			>BJNet Monitor is a platform for visualizing internet performances in Benin. It's a local
+			version of Measurement LAB for global internet performance. Here is QUIC data from External
+			server.</Card.Description
+		>
+	</Card.Header>
 	<Card.Content>
-		<h1 class="mb-6 text-2xl">{title}</h1>
-
 		<form
 			action=""
 			class="flex gap-2"
