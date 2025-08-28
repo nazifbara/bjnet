@@ -7,15 +7,27 @@
 	import FilterForm from '$lib/components/filter-form.svelte';
 	import type { FormData } from '$lib/types';
 
-	let formdata = $state<FormData | null>(null);
+	let sessionsComponent: Sessions;
+	let latencyComponent: Latency;
+	let ispComponent: ISP;
+	let streamsComponent: Streams;
+	let acknowledgmentComponent: Acknowledgment;
+
+	function handleFormSubmit(formData: FormData) {
+		sessionsComponent?.handleSubmit(formData);
+		latencyComponent?.handleSubmit(formData);
+		ispComponent?.handleSubmit(formData);
+		streamsComponent?.handleSubmit(formData);
+		acknowledgmentComponent?.handleSubmit(formData);
+	}
 </script>
 
-<FilterForm onsubmit={(data) => (formdata = data)} />
+<FilterForm onsubmit={handleFormSubmit} />
 
 <div class="grid gap-4">
-	<Sessions formData={formdata} />
-	<Latency formData={formdata} />
-	<ISP formData={formdata} />
-	<Streams formData={formdata} />
-	<Acknowledgment formData={formdata} />
+	<Sessions bind:this={sessionsComponent} />
+	<Latency bind:this={latencyComponent} />
+	<ISP bind:this={ispComponent} />
+	<Streams bind:this={streamsComponent} />
+	<Acknowledgment bind:this={acknowledgmentComponent} />
 </div>

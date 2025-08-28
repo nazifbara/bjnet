@@ -5,19 +5,15 @@
 	import * as Card from '$lib/components/ui/card';
 	import { fetchServiceLevelData } from '$lib/api';
 
-	type Props = {
-		formData: FormData | null;
-	};
-
-	const { formData }: Props = $props();
-
 	let downloadDist = $state<{ range: string; percent: number }[]>([]);
 	let uploadDist = $state<{ range: string; percent: number }[]>([]);
 	let sessionCount = $state(0);
 	let status: 'idle' | 'loading' | 'error' = $state('idle');
 	let errorMessage: string | null = $state(null);
+	let hasFormData = $state(false);
 
-	async function handleSubmit(formData: FormData) {
+	export async function handleSubmit(formData: FormData) {
+		hasFormData = true;
 		errorMessage = null;
 		status = 'loading';
 		downloadDist = [];
@@ -55,12 +51,6 @@
 			status = 'idle';
 		}
 	}
-
-	$effect(() => {
-		if (formData) {
-			handleSubmit(formData);
-		}
-	});
 </script>
 
 <Card.Root>
@@ -68,7 +58,7 @@
 		<Card.Title>Répartition des débits par session</Card.Title>
 	</Card.Header>
 	<Card.Content>
-		{#if !formData}
+		{#if !hasFormData}
 			<p class="text-muted-foreground">Veuillez sélectionner un intervalle de temps</p>
 		{:else if status === 'loading'}
 			<Loader2Icon class="mx-auto animate-spin" />
