@@ -6,10 +6,8 @@
 	import type { FormData, SelectItem, Destination } from '$lib/types.ts';
 	import { API_BASE_URL } from '$lib/constants';
 	import * as Card from '$lib/components/ui/card';
-	import { createEventDispatcher } from 'svelte';
 
 	type Props = {
-		title: string;
 		ips?: boolean;
 		onsubmit: (formData: FormData) => void;
 	};
@@ -85,8 +83,8 @@
 
 <Card.Root class="mb-4">
 	<Card.Header>
-		<Card.Title>BJNet Monitor</Card.Title>
-		<Card.Description
+		<Card.Title class="text-2xl">BJNet Monitor</Card.Title>
+		<Card.Description class="text-base"
 			>BJNet Monitor is a platform for visualizing internet performances in Benin. It's a local
 			version of Measurement LAB for global internet performance. Here is QUIC data from External
 			server.</Card.Description
