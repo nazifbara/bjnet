@@ -86,9 +86,9 @@
 		<Card.Title class="text-2xl">BJNet Monitor</Card.Title>
 		<Card.Description class="text-base"
 			>BJNet Monitor is a platform for visualizing internet performances in Benin. It's a local
-			version of Measurement LAB for global internet performance. Here is QUIC data from External
-			server.</Card.Description
+			version of Measurement LAB for global internet performance. server.</Card.Description
 		>
+		<p class="mb-2">Here is QUIC data from External</p>
 	</Card.Header>
 	<Card.Content>
 		<form
