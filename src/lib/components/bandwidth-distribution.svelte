@@ -21,7 +21,7 @@
 			const result = await fetchBandwidthDistributionData(formData);
 			if (!result) {
 				status = 'error';
-				errorMessage = 'Aucune donnée disponible pour cette période';
+				errorMessage = 'No data available for this period';
 				return;
 			}
 
@@ -43,8 +43,8 @@
 			status = 'error';
 			errorMessage =
 				error instanceof Error && error.message !== 'No data found for the given criteria'
-					? 'Une erreur est survenue lors de la récupération des données.'
-					: 'Aucune donnée disponible pour cette période';
+					? 'An error occurred while retrieving data.'
+					: 'No data available for this period';
 		} finally {
 			status = 'idle';
 		}
@@ -61,14 +61,14 @@
 
 <Card.Root>
 	<Card.Header>
-		<Card.Title>Distribution de la bande passante par FAI</Card.Title>
+		<Card.Title>Bandwidth Distribution by ISP</Card.Title>
 		<Card.Description>
-			Répartition du trafic upload et download entre les différents fournisseurs d'accès
+			Distribution of upload and download traffic across different internet service providers
 		</Card.Description>
 	</Card.Header>
 	<Card.Content>
 		{#if !hasFormData}
-			<p class="text-muted-foreground">Veuillez sélectionner un intervalle de temps</p>
+			<p class="text-muted-foreground">Please select a time interval</p>
 		{:else if status === 'loading'}
 			<Loader2Icon class="mx-auto animate-spin" />
 		{:else if errorMessage}
@@ -81,17 +81,17 @@
 				<div class="grid grid-cols-1 gap-4 md:grid-cols-2">
 					<div class="rounded-lg bg-muted/50 p-4 text-center">
 						<div class="text-2xl font-bold">{uploadDistribution.length}</div>
-						<div class="text-sm text-muted-foreground">FAI avec trafic upload</div>
+						<div class="text-sm text-muted-foreground">ISPs with upload traffic</div>
 					</div>
 					<div class="rounded-lg bg-muted/50 p-4 text-center">
 						<div class="text-2xl font-bold">{downloadDistribution.length}</div>
-						<div class="text-sm text-muted-foreground">FAI avec trafic download</div>
+						<div class="text-sm text-muted-foreground">ISPs with download traffic</div>
 					</div>
 				</div>
 
 				<!-- Chart -->
 				<div class="space-y-4">
-					<h4 class="text-center font-medium">Distribution de la bande passante par FAI</h4>
+					<h4 class="text-center font-medium">Bandwidth Distribution by ISP</h4>
 					{#if uploadDistribution.length > 0 || downloadDistribution.length > 0}
 						<Histogram
 							data1={uploadDistribution}
@@ -100,12 +100,12 @@
 							label2="Download"
 						/>
 					{:else}
-						<p class="text-center text-muted-foreground">Aucune donnée disponible</p>
+						<p class="text-center text-muted-foreground">No data available</p>
 					{/if}
 				</div>
 			</div>
 		{:else}
-			<p>Aucune donnée disponible pour cette période</p>
+			<p>No data available for this period</p>
 		{/if}
 	</Card.Content>
 </Card.Root>

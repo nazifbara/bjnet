@@ -21,7 +21,7 @@
 			const result = await fetchPacketLossData(formData);
 			if (!result) {
 				status = 'error';
-				errorMessage = 'Aucune donnée disponible pour cette période';
+				errorMessage = 'No data available for this period';
 				return;
 			}
 			count = result.session_count;
@@ -34,8 +34,8 @@
 			status = 'error';
 			errorMessage =
 				error instanceof Error && error.message !== 'No data found for the given criteria'
-					? 'Une erreur est survenue lors de la récupération des données.'
-					: 'Aucune donnée disponible pour cette période';
+					? 'An error occurred while retrieving data.'
+					: 'No data available for this period';
 		} finally {
 			status = 'idle';
 		}
@@ -50,12 +50,12 @@
 
 <Card.Root>
 	<Card.Header>
-		<Card.Title>Analyse de la perte de paquets</Card.Title>
-		<Card.Description>Distribution des paquets perdus pendant la transmission</Card.Description>
+		<Card.Title>Packet Loss Analysis</Card.Title>
+		<Card.Description>Distribution of packets lost during transmission</Card.Description>
 	</Card.Header>
 	<Card.Content>
 		{#if !hasFormData}
-			<p class="text-muted-foreground">Veuillez sélectionner un intervalle de temps</p>
+			<p class="text-muted-foreground">Please select a time interval</p>
 		{:else if status === 'loading'}
 			<Loader2Icon class="mx-auto animate-spin" />
 		{:else if errorMessage}
@@ -68,7 +68,7 @@
 				<div class="grid grid-cols-1 gap-4 md:grid-cols-1">
 					<div class="rounded-lg bg-muted/50 p-4 text-center">
 						<div class="text-2xl font-bold">{count}</div>
-						<div class="text-sm text-muted-foreground">Sessions analysées</div>
+						<div class="text-sm text-muted-foreground">Sessions analyzed</div>
 					</div>
 				</div>
 
@@ -76,7 +76,7 @@
 				<Histogram data1={data} data2={[]} label1="Packet Loss" label2="" />
 			</div>
 		{:else}
-			<p>Aucune donnée disponible pour cette période</p>
+			<p>No data available for this period</p>
 		{/if}
 	</Card.Content>
 </Card.Root>

@@ -28,7 +28,7 @@
 			const result = await fetchRetransmissionData(formData);
 			if (!result) {
 				status = 'error';
-				errorMessage = 'Aucune donnée disponible pour cette période';
+				errorMessage = 'No data available for this period';
 				return;
 			}
 
@@ -54,8 +54,8 @@
 			status = 'error';
 			errorMessage =
 				error instanceof Error && error.message !== 'No data found for the given criteria'
-					? 'Une erreur est survenue lors de la récupération des données.'
-					: 'Aucune donnée disponible pour cette période';
+					? 'An error occurred while retrieving data.'
+					: 'No data available for this period';
 		} finally {
 			status = 'idle';
 		}
@@ -73,15 +73,14 @@
 
 <Card.Root>
 	<Card.Header>
-		<Card.Title>Analyse des retransmissions</Card.Title>
+		<Card.Title>Retransmission Analysis</Card.Title>
 		<Card.Description>
-			Montre combien de paquets ont été perdus, les causes principales, et la répartition des taux
-			de perte
+			Shows how many packets were lost, main causes, and distribution of loss rates
 		</Card.Description>
 	</Card.Header>
 	<Card.Content>
 		{#if !hasFormData}
-			<p class="text-muted-foreground">Veuillez sélectionner un intervalle de temps</p>
+			<p class="text-muted-foreground">Please select a time interval</p>
 		{:else if status === 'loading'}
 			<Loader2Icon class="mx-auto animate-spin" />
 		{:else if errorMessage}
@@ -94,15 +93,15 @@
 				<div class="grid grid-cols-1 gap-4 md:grid-cols-3">
 					<div class="rounded-lg bg-muted/50 p-4 text-center">
 						<div class="text-2xl font-bold">{sessionCount}</div>
-						<div class="text-sm text-muted-foreground">Sessions analysées</div>
+						<div class="text-sm text-muted-foreground">Sessions analyzed</div>
 					</div>
 					<div class="rounded-lg bg-muted/50 p-4 text-center">
 						<div class="text-2xl font-bold">{totalPacketsLost.toLocaleString()}</div>
-						<div class="text-sm text-muted-foreground">Paquets perdus totaux</div>
+						<div class="text-sm text-muted-foreground">Total packets lost</div>
 					</div>
 					<div class="rounded-lg bg-muted/50 p-4 text-center">
 						<div class="text-2xl font-bold">{avgPacketsLostPerSession.toFixed(1)}</div>
-						<div class="text-sm text-muted-foreground">Moyenne par session</div>
+						<div class="text-sm text-muted-foreground">Average per session</div>
 					</div>
 				</div>
 
@@ -110,19 +109,19 @@
 				<div class="grid grid-cols-1 gap-6 lg:grid-cols-[auto_1fr]">
 					<!-- Loss Trigger Distribution (Donut Chart) -->
 					<div class="space-y-4">
-						<h4 class="text-center font-medium">Causes des retransmissions</h4>
+						<h4 class="text-center font-medium">Retransmission Causes</h4>
 						<PieChart data={lossTriggerData} />
 					</div>
 
 					<!-- Packet Loss Rate Distribution (Histogram) -->
 					<div class="space-y-4">
-						<h4 class="text-center font-medium">Répartition des taux de perte</h4>
-						<Histogram data1={packetLossRateData} data2={[]} label1="Taux de perte" label2="" />
+						<h4 class="text-center font-medium">Loss Rate Distribution</h4>
+						<Histogram data1={packetLossRateData} data2={[]} label1="Loss Rate" label2="" />
 					</div>
 				</div>
 			</div>
 		{:else}
-			<p>Aucune donnée disponible pour cette période</p>
+			<p>No data available for this period</p>
 		{/if}
 	</Card.Content>
 </Card.Root>

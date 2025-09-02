@@ -145,7 +145,7 @@
 						{#if status === 'loading-destinations'}
 							<Loader2Icon class="animate-spin" />
 						{:else}
-							{countries.find((f) => f.value === formData.country)?.label ?? 'Pays'}
+							{countries.find((f) => f.value === formData.country)?.label ?? 'Country'}
 						{/if}
 					</Select.Trigger>
 					<Select.Content>
@@ -164,7 +164,7 @@
 						{#if status === 'loading-destinations'}
 							<Loader2Icon class="animate-spin" />
 						{:else}
-							{regions.find((f) => f.value === formData.region)?.label ?? 'Région'}
+							{regions.find((f) => f.value === formData.region)?.label ?? 'Region'}
 						{/if}
 					</Select.Trigger>
 					<Select.Content>
@@ -183,7 +183,7 @@
 						{#if status === 'loading-destinations'}
 							<Loader2Icon class="animate-spin" />
 						{:else}
-							{regions.find((f) => f.value === formData.city)?.label ?? 'Ville'}
+							{regions.find((f) => f.value === formData.city)?.label ?? 'City'}
 						{/if}
 					</Select.Trigger>
 					<Select.Content>
@@ -197,10 +197,10 @@
 				{#if status === 'loading-results'}
 					<Loader2Icon class="h-4 w-4 animate-spin" />
 				{/if}
-				Rechercher
+				Search
 			</Button>
 			<Button type="button" variant="outline" onclick={handleReset} disabled={isResetDisabled}>
-				Réinitialiser
+				Reset
 			</Button>
 		</form>
 	</Card.Content>

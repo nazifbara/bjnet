@@ -26,7 +26,7 @@
 			const result = await fetchBandwithData(formData);
 			if (!result) {
 				status = 'error';
-				errorMessage = 'Aucune donnée disponible pour cette période';
+				errorMessage = 'No data available for this period';
 				return;
 			}
 			data = result.results || [];
@@ -35,8 +35,8 @@
 			status = 'error';
 			errorMessage =
 				error instanceof Error && error.message !== 'No data found for the given criteria'
-					? 'Une erreur is survenue lors de la récupération des données.'
-					: 'Aucune donnée disponible pour cette période';
+					? 'An error occurred while retrieving data.'
+					: 'No data available for this period';
 		} finally {
 			status = 'idle';
 		}
@@ -51,14 +51,14 @@
 
 <Card.Root>
 	<Card.Header>
-		<Card.Title>Débits moyens par FAI</Card.Title>
+		<Card.Title>Average Speeds by ISP</Card.Title>
 		<Card.Description>
-			Comparaison des performances de téléchargement et d'upload par fournisseur d'accès
+			Comparison of download and upload performance by internet service provider
 		</Card.Description>
 	</Card.Header>
 	<Card.Content>
 		{#if !hasFormData}
-			<p class="text-muted-foreground">Veuillez sélectionner un intervalle de temps</p>
+			<p class="text-muted-foreground">Please select a time interval</p>
 		{:else if status === 'loading'}
 			<Loader2Icon class="mx-auto animate-spin" />
 		{:else if errorMessage}
@@ -73,11 +73,11 @@
 						<div class="text-2xl font-bold">
 							{data.reduce((sum, item) => sum + item.sessions, 0)}
 						</div>
-						<div class="text-sm text-muted-foreground">Sessions totales</div>
+						<div class="text-sm text-muted-foreground">Total sessions</div>
 					</div>
 					<div class="rounded-lg bg-muted/50 p-4 text-center">
 						<div class="text-2xl font-bold">{data.length}</div>
-						<div class="text-sm text-muted-foreground">FAI analysés</div>
+						<div class="text-sm text-muted-foreground">ISPs analyzed</div>
 					</div>
 				</div>
 
@@ -85,7 +85,7 @@
 				<GroupedBarChart {data} />
 			</div>
 		{:else}
-			<p>Aucune donnée disponible pour cette période</p>
+			<p>No data available for this period</p>
 		{/if}
 	</Card.Content>
 </Card.Root>
