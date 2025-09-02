@@ -69,6 +69,20 @@ export async function fetchPacketLossData(formData: FormData): Promise<PacketLos
 	return apiFetch<PacketLossResponse>('packetLoss', formData);
 }
 
+interface RetransmissionResponse {
+	session_count: number;
+	total_packets_lost: number;
+	avg_packets_lost_per_session: number;
+	loss_trigger_distribution: Record<string, string>;
+	packet_loss_rate_distribution: Record<string, string>;
+}
+
+export async function fetchRetransmissionData(
+	formData: FormData
+): Promise<RetransmissionResponse | null> {
+	return apiFetch<RetransmissionResponse>('retransmissions', formData);
+}
+
 interface AckDelayResponse {
 	ack_count: number;
 	ack_delay_distribution_ms: Record<string, string>;
