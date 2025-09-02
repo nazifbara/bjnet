@@ -60,6 +60,15 @@ export async function fetchRTTData(formData: FormData): Promise<RTTResponse | nu
 	return apiFetch<RTTResponse>('rtt', formData);
 }
 
+interface PacketLossResponse {
+	session_count: number;
+	packet_loss_distribution: Record<string, string>;
+}
+
+export async function fetchPacketLossData(formData: FormData): Promise<PacketLossResponse | null> {
+	return apiFetch<PacketLossResponse>('packetLoss', formData);
+}
+
 interface AckDelayResponse {
 	ack_count: number;
 	ack_delay_distribution_ms: Record<string, string>;

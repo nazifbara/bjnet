@@ -1,6 +1,7 @@
 <script lang="ts">
 	import Sessions from '$lib/components/sessions.svelte';
 	import Latency from '$lib/components/latency.svelte';
+	import PacketLoss from '$lib/components/packet-loss.svelte';
 	import ISP from '$lib/components/isp.svelte';
 	import Streams from '$lib/components/streams.svelte';
 	import Acknowledgment from '$lib/components/acknowledgment.svelte';
@@ -9,6 +10,7 @@
 
 	let sessionsComponent: Sessions;
 	let latencyComponent: Latency;
+	let packetLossComponent: PacketLoss;
 	let ispComponent: ISP;
 	let streamsComponent: Streams;
 	let acknowledgmentComponent: Acknowledgment;
@@ -16,6 +18,7 @@
 	function handleFormSubmit(formData: FormData) {
 		sessionsComponent?.handleSubmit(formData);
 		latencyComponent?.handleSubmit(formData);
+		packetLossComponent?.handleSubmit(formData);
 		ispComponent?.handleSubmit(formData);
 		streamsComponent?.handleSubmit(formData);
 		acknowledgmentComponent?.handleSubmit(formData);
@@ -27,6 +30,7 @@
 <div class="grid gap-4">
 	<Sessions bind:this={sessionsComponent} />
 	<Latency bind:this={latencyComponent} />
+	<PacketLoss bind:this={packetLossComponent} />
 	<ISP bind:this={ispComponent} />
 	<Streams bind:this={streamsComponent} />
 	<Acknowledgment bind:this={acknowledgmentComponent} />
