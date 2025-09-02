@@ -51,6 +51,15 @@
 			status = 'idle';
 		}
 	}
+
+	export function handleReset() {
+		hasFormData = false;
+		downloadDist = [];
+		uploadDist = [];
+		sessionCount = 0;
+		status = 'idle';
+		errorMessage = null;
+	}
 </script>
 
 <Card.Root>

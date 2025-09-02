@@ -60,6 +60,15 @@
 			status = 'idle';
 		}
 	}
+
+	export function handleReset() {
+		hasFormData = false;
+		sessionCount = 0;
+		totalPacketsLost = 0;
+		avgPacketsLostPerSession = 0;
+		status = 'idle';
+		errorMessage = null;
+	}
 </script>
 
 <Card.Root>

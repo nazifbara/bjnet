@@ -10,9 +10,10 @@
 	type Props = {
 		ips?: boolean;
 		onsubmit: (formData: FormData) => void;
+		onreset?: () => void;
 	};
 
-	let { ips = false, onsubmit }: Props = $props();
+	let { ips = false, onsubmit, onreset }: Props = $props();
 
 	const formData: FormData = $state({
 		startDate: '',
@@ -25,6 +26,11 @@
 	let destinations: Destination[] = $state([]);
 	let status: 'idle' | 'loading-destinations' | 'loading-results' | 'error-results' =
 		$state('idle');
+
+	// Derived states for button enabling
+	let isFormValid = $derived(formData.startDate && formData.endDate);
+	let isSearchDisabled = $derived(!isFormValid || status !== 'idle');
+	let isResetDisabled = $derived(status !== 'idle');
 
 	let countries: SelectItem[] = $derived(
 		Array.from(new Set(destinations.map((d) => d.country)))
@@ -77,15 +83,30 @@
 			console.error('Start date and end date are required');
 			return;
 		}
+		status = 'loading-results';
 		onsubmit(formData);
+		// Reset status after a short delay to allow components to start loading
+		setTimeout(() => {
+			status = 'idle';
+		}, 500);
+	}
+
+	function handleReset() {
+		formData.startDate = '';
+		formData.endDate = '';
+		formData.country = '';
+		formData.region = '';
+		formData.city = '';
+		destinations = [];
+		onreset?.();
 	}
 </script>
 
 <Card.Root class="mb-4">
 	<Card.Header>
 		<Card.Title class="text-2xl">BJNet Monitor</Card.Title>
-		<Card.Description class="text-base"
-			>BJNet Monitor is a platform for visualizing internet performances in Benin. It's a local
+		<Card.Description class="text-base">
+			BJNet Monitor is a platform for visualizing internet performances in Benin. It's a local
 			version of Measurement LAB for global internet performance. server.</Card.Description
 		>
 		<p class="mb-2">Here is QUIC data from External</p>
@@ -104,14 +125,21 @@
 				name="startDate"
 				placeholder="Date de début"
 				bind:value={formData.startDate}
+				disabled={status !== 'idle'}
 			/>
-			<Input type="date" name="endDate" placeholder="Date de fin" bind:value={formData.endDate} />
+			<Input
+				type="date"
+				name="endDate"
+				placeholder="Date de fin"
+				bind:value={formData.endDate}
+				disabled={status !== 'idle'}
+			/>
 			{#if !ips}
 				<Select.Root
 					type="single"
 					name="country"
 					bind:value={formData.country}
-					disabled={!countries.length}
+					disabled={!countries.length || status !== 'idle'}
 				>
 					<Select.Trigger>
 						{#if status === 'loading-destinations'}
@@ -130,7 +158,7 @@
 					type="single"
 					name="region"
 					bind:value={formData.region}
-					disabled={!regions.length}
+					disabled={!regions.length || status !== 'idle'}
 				>
 					<Select.Trigger>
 						{#if status === 'loading-destinations'}
@@ -145,7 +173,12 @@
 						{/each}
 					</Select.Content>
 				</Select.Root>
-				<Select.Root type="single" name="city" bind:value={formData.city} disabled={!cities.length}>
+				<Select.Root
+					type="single"
+					name="city"
+					bind:value={formData.city}
+					disabled={!cities.length || status !== 'idle'}
+				>
 					<Select.Trigger>
 						{#if status === 'loading-destinations'}
 							<Loader2Icon class="animate-spin" />
@@ -160,7 +193,15 @@
 					</Select.Content>
 				</Select.Root>
 			{/if}
-			<Button type="submit">Rechercher</Button>
+			<Button type="submit" disabled={isSearchDisabled}>
+				{#if status === 'loading-results'}
+					<Loader2Icon class="h-4 w-4 animate-spin" />
+				{/if}
+				Rechercher
+			</Button>
+			<Button type="button" variant="outline" onclick={handleReset} disabled={isResetDisabled}>
+				Réinitialiser
+			</Button>
 		</form>
 	</Card.Content>
 </Card.Root>

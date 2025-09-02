@@ -29,9 +29,20 @@
 		streamsComponent?.handleSubmit(formData);
 		acknowledgmentComponent?.handleSubmit(formData);
 	}
+
+	function handleFormReset() {
+		sessionsComponent?.handleReset();
+		latencyComponent?.handleReset();
+		packetLossComponent?.handleReset();
+		retransmissionsComponent?.handleReset();
+		bandwidthDistributionComponent?.handleReset();
+		ispComponent?.handleReset();
+		streamsComponent?.handleReset();
+		acknowledgmentComponent?.handleReset();
+	}
 </script>
 
-<FilterForm onsubmit={handleFormSubmit} />
+<FilterForm onsubmit={handleFormSubmit} onreset={handleFormReset} />
 
 <div class="grid min-w-0 gap-4">
 	<Sessions bind:this={sessionsComponent} />

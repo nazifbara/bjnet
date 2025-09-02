@@ -49,6 +49,14 @@
 			status = 'idle';
 		}
 	}
+
+	export function handleReset() {
+		hasFormData = false;
+		uploadDistribution = [];
+		downloadDistribution = [];
+		status = 'idle';
+		errorMessage = null;
+	}
 </script>
 
 <Card.Root>

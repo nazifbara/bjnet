@@ -46,6 +46,12 @@
 			status = 'idle';
 		}
 	}
+
+	export function handleReset() {
+		hasFormData = false;
+		status = 'idle';
+		errorMessage = null;
+	}
 </script>
 
 <Card.Root>
