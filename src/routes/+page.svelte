@@ -3,6 +3,7 @@
 	import Latency from '$lib/components/latency.svelte';
 	import PacketLoss from '$lib/components/packet-loss.svelte';
 	import Retransmissions from '$lib/components/retransmissions.svelte';
+	import BandwidthDistribution from '$lib/components/bandwidth-distribution.svelte';
 	import ISP from '$lib/components/isp.svelte';
 	import Streams from '$lib/components/streams.svelte';
 	import Acknowledgment from '$lib/components/acknowledgment.svelte';
@@ -13,6 +14,7 @@
 	let latencyComponent: Latency;
 	let packetLossComponent: PacketLoss;
 	let retransmissionsComponent: Retransmissions;
+	let bandwidthDistributionComponent: BandwidthDistribution;
 	let ispComponent: ISP;
 	let streamsComponent: Streams;
 	let acknowledgmentComponent: Acknowledgment;
@@ -22,6 +24,7 @@
 		latencyComponent?.handleSubmit(formData);
 		packetLossComponent?.handleSubmit(formData);
 		retransmissionsComponent?.handleSubmit(formData);
+		bandwidthDistributionComponent?.handleSubmit(formData);
 		ispComponent?.handleSubmit(formData);
 		streamsComponent?.handleSubmit(formData);
 		acknowledgmentComponent?.handleSubmit(formData);
@@ -35,6 +38,7 @@
 	<Latency bind:this={latencyComponent} />
 	<PacketLoss bind:this={packetLossComponent} />
 	<Retransmissions bind:this={retransmissionsComponent} />
+	<BandwidthDistribution bind:this={bandwidthDistributionComponent} />
 	<ISP bind:this={ispComponent} />
 	<Streams bind:this={streamsComponent} />
 	<Acknowledgment bind:this={acknowledgmentComponent} />

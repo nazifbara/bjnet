@@ -116,3 +116,14 @@ interface BandwidthResponse {
 export async function fetchBandwithData(formData: FormData): Promise<BandwidthResponse | null> {
 	return apiFetch<BandwidthResponse>('bandwidthByISP', formData, false);
 }
+
+interface BandwidthDistributionResponse {
+	upload_distribution: Record<string, string>;
+	download_distribution: Record<string, string>;
+}
+
+export async function fetchBandwidthDistributionData(
+	formData: FormData
+): Promise<BandwidthDistributionResponse | null> {
+	return apiFetch<BandwidthDistributionResponse>('bandwidthDistributionByISP', formData, false);
+}

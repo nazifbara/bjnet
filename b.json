@@ -1,15 +1,4 @@
 {
-	"session_count": 10,
-	"total_packets_lost": 1905,
-	"avg_packets_lost_per_session": 190.5,
-	"loss_trigger_distribution": {
-		"Seuil de temps dépassé": "80.0%",
-		"Réarrangement de paquets": "20.0%"
-	},
-	"packet_loss_rate_distribution": {
-		"0-1%": "30.0%",
-		"1-3%": "30.0%",
-		"3-5%": "30.0%",
-		"5%+": "10.0%"
-	}
+	"upload_distribution": { "AS37424 SPACETEL BENIN SA": "100.0%" },
+	"download_distribution": { "AS37424 SPACETEL BENIN SA": "100.0%" }
 }

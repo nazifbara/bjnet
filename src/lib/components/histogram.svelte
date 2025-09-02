@@ -34,13 +34,13 @@
 			new Set([...data1.map((d) => d.range), ...data2.map((d) => d.range)])
 		);
 
-		const x0 = d3.scaleBand().domain(allRanges).range([0, width]).padding(0.2);
+		const x0 = d3.scaleBand().domain(allRanges).range([0, width]).padding(0.4);
 
 		const x1 = d3
 			.scaleBand()
 			.domain(data2.length ? [label1, label2] : [label1])
 			.range([0, x0.bandwidth()])
-			.padding(0.05);
+			.padding(0.2);
 
 		const y = d3
 			.scaleLinear()
