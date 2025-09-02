@@ -46,6 +46,9 @@
 <Card.Root>
 	<Card.Header>
 		<Card.Title>Débits moyens par FAI</Card.Title>
+		<Card.Description>
+			Comparaison des performances de téléchargement et d'upload par fournisseur d'accès
+		</Card.Description>
 	</Card.Header>
 	<Card.Content>
 		{#if !hasFormData}
@@ -57,7 +60,24 @@
 				{errorMessage}
 			</p>
 		{:else if data.length > 0}
-			<GroupedBarChart {data} />
+			<div class="space-y-6">
+				<!-- Statistics Summary -->
+				<div class="grid grid-cols-1 gap-4 md:grid-cols-2">
+					<div class="rounded-lg bg-muted/50 p-4 text-center">
+						<div class="text-2xl font-bold">
+							{data.reduce((sum, item) => sum + item.sessions, 0)}
+						</div>
+						<div class="text-sm text-muted-foreground">Sessions totales</div>
+					</div>
+					<div class="rounded-lg bg-muted/50 p-4 text-center">
+						<div class="text-2xl font-bold">{data.length}</div>
+						<div class="text-sm text-muted-foreground">FAI analysés</div>
+					</div>
+				</div>
+
+				<!-- Chart -->
+				<GroupedBarChart {data} />
+			</div>
 		{:else}
 			<p>Aucune donnée disponible pour cette période</p>
 		{/if}

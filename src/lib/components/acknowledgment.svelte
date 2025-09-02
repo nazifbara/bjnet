@@ -45,6 +45,9 @@
 <Card.Root>
 	<Card.Header>
 		<Card.Title>Analyse des délais d'acquittement</Card.Title>
+		<Card.Description>
+			Temps d'attente pour recevoir la confirmation de réception des paquets
+		</Card.Description>
 	</Card.Header>
 	<Card.Content>
 		{#if !hasFormData}
@@ -56,7 +59,18 @@
 				{errorMessage}
 			</p>
 		{:else if count > 0}
-			<Histogram data1={data} data2={[]} label1="Ack" label2="" />
+			<div class="space-y-6">
+				<!-- Statistics Summary -->
+				<div class="grid grid-cols-1 gap-4 md:grid-cols-1">
+					<div class="rounded-lg bg-muted/50 p-4 text-center">
+						<div class="text-2xl font-bold">{count}</div>
+						<div class="text-sm text-muted-foreground">Acquittements analysés</div>
+					</div>
+				</div>
+
+				<!-- Chart -->
+				<Histogram data1={data} data2={[]} label1="Ack" label2="" />
+			</div>
 		{:else}
 			<p>Aucune donnée disponible pour cette période</p>
 		{/if}

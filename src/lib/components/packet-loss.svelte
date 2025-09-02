@@ -45,6 +45,7 @@
 <Card.Root>
 	<Card.Header>
 		<Card.Title>Analyse de la perte de paquets</Card.Title>
+		<Card.Description>Distribution des paquets perdus pendant la transmission</Card.Description>
 	</Card.Header>
 	<Card.Content>
 		{#if !hasFormData}
@@ -56,7 +57,18 @@
 				{errorMessage}
 			</p>
 		{:else if count > 0}
-			<Histogram data1={data} data2={[]} label1="Packet Loss" label2="" />
+			<div class="space-y-6">
+				<!-- Statistics Summary -->
+				<div class="grid grid-cols-1 gap-4 md:grid-cols-1">
+					<div class="rounded-lg bg-muted/50 p-4 text-center">
+						<div class="text-2xl font-bold">{count}</div>
+						<div class="text-sm text-muted-foreground">Sessions analysées</div>
+					</div>
+				</div>
+
+				<!-- Chart -->
+				<Histogram data1={data} data2={[]} label1="Packet Loss" label2="" />
+			</div>
 		{:else}
 			<p>Aucune donnée disponible pour cette période</p>
 		{/if}

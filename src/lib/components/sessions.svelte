@@ -56,6 +56,9 @@
 <Card.Root>
 	<Card.Header>
 		<Card.Title>Répartition des débits par session</Card.Title>
+		<Card.Description>
+			Analyse des vitesses de téléchargement et d'upload pour toutes les sessions
+		</Card.Description>
 	</Card.Header>
 	<Card.Content>
 		{#if !hasFormData}
@@ -67,7 +70,18 @@
 				{errorMessage}
 			</p>
 		{:else if sessionCount > 0}
-			<Histogram data1={downloadDist} data2={uploadDist} label1="Download" label2="Upload" />
+			<div class="space-y-6">
+				<!-- Statistics Summary -->
+				<div class="grid grid-cols-1 gap-4 md:grid-cols-1">
+					<div class="rounded-lg bg-muted/50 p-4 text-center">
+						<div class="text-2xl font-bold">{sessionCount}</div>
+						<div class="text-sm text-muted-foreground">Sessions analysées</div>
+					</div>
+				</div>
+
+				<!-- Chart -->
+				<Histogram data1={downloadDist} data2={uploadDist} label1="Download" label2="Upload" />
+			</div>
 		{:else}
 			<p>Aucune donnée disponible pour cette période</p>
 		{/if}

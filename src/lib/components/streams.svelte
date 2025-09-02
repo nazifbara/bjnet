@@ -51,6 +51,9 @@
 <Card.Root>
 	<Card.Header>
 		<Card.Title>Analyse des flux par connexion</Card.Title>
+		<Card.Description>
+			Distribution de la concurrence des flux et analyse de l'utilisation simultanée
+		</Card.Description>
 	</Card.Header>
 	<Card.Content>
 		{#if !hasFormData}
@@ -62,10 +65,25 @@
 				{errorMessage}
 			</p>
 		{:else if count > 0}
-			<div class="space-y-4">
-				<Histogram data1={data} data2={[]} label1="Streams" label2="" />
-				<div class="flex justify-center">
-					<DonutChart value={avgConcurrency} label="Flux" />
+			<div class="space-y-6">
+				<!-- Statistics Summary -->
+				<div class="grid grid-cols-1 gap-4 md:grid-cols-2">
+					<div class="rounded-lg bg-muted/50 p-4 text-center">
+						<div class="text-2xl font-bold">{count}</div>
+						<div class="text-sm text-muted-foreground">Sessions analysées</div>
+					</div>
+					<div class="rounded-lg bg-muted/50 p-4 text-center">
+						<div class="text-2xl font-bold">{avgConcurrency.toFixed(1)}</div>
+						<div class="text-sm text-muted-foreground">Concurrence moyenne</div>
+					</div>
+				</div>
+
+				<!-- Charts -->
+				<div class="space-y-4">
+					<Histogram data1={data} data2={[]} label1="Streams" label2="" />
+					<div class="flex justify-center">
+						<DonutChart value={avgConcurrency} label="Flux" />
+					</div>
 				</div>
 			</div>
 		{:else}
