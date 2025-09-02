@@ -98,7 +98,7 @@
 				</div>
 
 				<!-- Charts -->
-				<div class="grid grid-cols-1 gap-6 lg:grid-cols-2">
+				<div class="grid grid-cols-1 gap-6 lg:grid-cols-[auto_1fr]">
 					<!-- Loss Trigger Distribution (Donut Chart) -->
 					<div class="space-y-4">
 						<h4 class="text-center font-medium">Causes des retransmissions</h4>

@@ -30,7 +30,7 @@
 
 <FilterForm onsubmit={handleFormSubmit} />
 
-<div class="grid gap-4">
+<div class="grid min-w-0 gap-4">
 	<Sessions bind:this={sessionsComponent} />
 	<Latency bind:this={latencyComponent} />
 	<PacketLoss bind:this={packetLossComponent} />
