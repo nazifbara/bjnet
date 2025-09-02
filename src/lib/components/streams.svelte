@@ -67,14 +67,10 @@
 		{:else if count > 0}
 			<div class="space-y-6">
 				<!-- Statistics Summary -->
-				<div class="grid grid-cols-1 gap-4 md:grid-cols-2">
+				<div class="grid">
 					<div class="rounded-lg bg-muted/50 p-4 text-center">
 						<div class="text-2xl font-bold">{count}</div>
 						<div class="text-sm text-muted-foreground">Sessions analysées</div>
-					</div>
-					<div class="rounded-lg bg-muted/50 p-4 text-center">
-						<div class="text-2xl font-bold">{avgConcurrency.toFixed(1)}</div>
-						<div class="text-sm text-muted-foreground">Concurrence moyenne</div>
 					</div>
 				</div>
 
