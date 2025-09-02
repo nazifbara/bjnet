@@ -1,48 +1,30 @@
 <script lang="ts">
-	import {
-		BookDownIcon,
-		CircleUserIcon,
-		SettingsIcon,
-		BoxIcon,
-		UsersIcon,
-		PodcastIcon,
-		ArrowBigDownIcon,
-		ArrowUpDown,
-		LoaderIcon,
-		ShieldQuestionIcon,
-		EthernetPortIcon
-	} from '@lucide/svelte';
+	import { ChevronDownIcon, LayersIcon, ChevronUpIcon } from '@lucide/svelte';
 	import { page } from '$app/state';
 
 	import * as Sidebar from '$lib/components/ui/sidebar';
+	import * as Collapsible from '$lib/components/ui/collapsible';
 
-	const routes = [
+	const serverProtocolsRoutes = [
 		{
-			title: 'Débits par session',
-			url: '/sessions',
-			icon: ArrowUpDown
+			title: 'UAC & TCP',
+			url: '/#'
 		},
 		{
-			title: "Délais d'aller-retour",
-			url: '/latency',
-			icon: LoaderIcon
+			title: 'UAC & QUIC',
+			url: '/#'
 		},
 		{
-			title: "Délais d'acquittement",
-			url: '/acknowledgment',
-			icon: ShieldQuestionIcon
+			title: 'EMES & TCP',
+			url: '/#'
 		},
 		{
-			title: 'Flux simultanés',
-			url: '/streams',
-			icon: PodcastIcon
-		},
-		{
-			title: 'Bande passante',
-			url: '/isp',
-			icon: EthernetPortIcon
+			title: 'EMES & QUIC',
+			url: '/emes&quic'
 		}
 	];
+
+	let menuGroupOpen = $state(true);
 </script>
 
 <Sidebar.Root>
@@ -50,24 +32,50 @@
 		<Sidebar.Header>
 			<img src="/bjnet_icon.jpeg" alt="logo" />
 		</Sidebar.Header>
-		<Sidebar.Group>
-			<Sidebar.GroupLabel>API</Sidebar.GroupLabel>
-			<Sidebar.GroupContent>
-				<Sidebar.Menu>
-					{#each routes as item (item.title)}
-						<Sidebar.MenuItem>
-							<Sidebar.MenuButton isActive={page.url.pathname === item.url}>
-								{#snippet child({ props })}
-									<a href={item.url} {...props}>
-										<item.icon />
-										<span>{item.title}</span>
-									</a>
-								{/snippet}
+
+		<Collapsible.Root bind:open={menuGroupOpen} class="group/collapsible">
+			<Sidebar.Menu>
+				<Sidebar.MenuItem>
+					<Collapsible.Trigger>
+						{#snippet child({ props })}
+							<Sidebar.MenuButton {...props}
+								><LayersIcon /> <span class="mr-auto">Server & Protocol</span>
+								{#if menuGroupOpen}
+									<ChevronDownIcon />
+								{:else}
+									<ChevronUpIcon />
+								{/if}
 							</Sidebar.MenuButton>
-						</Sidebar.MenuItem>
-					{/each}
-				</Sidebar.Menu>
-			</Sidebar.GroupContent>
-		</Sidebar.Group>
+						{/snippet}
+					</Collapsible.Trigger>
+					<Collapsible.Content>
+						<Sidebar.MenuSub>
+							{#each serverProtocolsRoutes as item (item.title)}
+								<Sidebar.MenuButton isActive={item.url === page.url.pathname}>
+									{#snippet child({ props })}
+										<a href={item.url} {...props}>
+											<span>{item.title}</span>
+										</a>
+									{/snippet}
+								</Sidebar.MenuButton>
+							{/each}
+						</Sidebar.MenuSub>
+					</Collapsible.Content>
+				</Sidebar.MenuItem>
+			</Sidebar.Menu>
+		</Collapsible.Root>
+		<Collapsible.Root class="group/collapsible">
+			<Sidebar.Menu>
+				<Sidebar.MenuItem>
+					<Collapsible.Trigger>
+						{#snippet child({ props })}
+							<Sidebar.MenuButton {...props}
+								><LayersIcon /> <span>Run SpeedTest</span>
+							</Sidebar.MenuButton>
+						{/snippet}
+					</Collapsible.Trigger>
+				</Sidebar.MenuItem>
+			</Sidebar.Menu>
+		</Collapsible.Root>
 	</Sidebar.Content>
 </Sidebar.Root>
