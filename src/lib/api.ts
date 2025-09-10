@@ -8,21 +8,33 @@ async function apiFetch<T>(
 	formData: FormData,
 	includeLocation = true
 ): Promise<T | null> {
-	let url = `${API_BASE_URL}/${endpoint}?startDate=${formData.startDate}&endDate=${formData.endDate}`;
+	const url = `${API_BASE_URL}/${endpoint}`;
 
 	try {
+		const body: {
+			startDate: string;
+			endDate: string;
+			country?: string;
+			region?: string;
+			city?: string;
+		} = {
+			startDate: formData.startDate,
+			endDate: formData.endDate
+		};
+
 		if (includeLocation) {
-			if (formData.country) url += `&country=${formData.country}`;
-			if (formData.region) url += `&region=${formData.region}`;
-			if (formData.city) url += `&city=${formData.city}`;
+			if (formData.country) body.country = formData.country;
+			if (formData.region) body.region = formData.region;
+			if (formData.city) body.city = formData.city;
 		}
 
 		const response = await fetch(url, {
-			method: 'GET',
+			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json',
 				'x-api-key': API_KEY
-			}
+			},
+			body: JSON.stringify(body)
 		});
 
 		if (response.status === 404) {
