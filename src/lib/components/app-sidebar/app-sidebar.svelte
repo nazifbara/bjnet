@@ -8,15 +8,15 @@
 	const serverProtocolsRoutes = [
 		{
 			title: 'UAC & TCP',
-			url: '/#'
+			url: '/uac&tcp'
 		},
 		{
 			title: 'UAC & QUIC',
-			url: '/#'
+			url: '/uac&quic'
 		},
 		{
 			title: 'EMES & TCP',
-			url: '/#'
+			url: '/emes&tcp'
 		},
 		{
 			title: 'EMES & QUIC',
@@ -70,7 +70,10 @@
 					<Collapsible.Trigger>
 						{#snippet child({ props })}
 							<Sidebar.MenuButton {...props}
-								><LayersIcon /> <span>Run SpeedTest</span>
+								><LayersIcon />
+								<a href="https://monitor.uac.bj:4444" target="_blank" rel="noopener noreferrer"
+									>Run SpeedTest</a
+								>
 							</Sidebar.MenuButton>
 						{/snippet}
 					</Collapsible.Trigger>
