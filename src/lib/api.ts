@@ -29,6 +29,7 @@ async function apiFetch<T>(
 		}
 
 		const response = await fetch(url, {
+			cache: 'no-store',
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json',

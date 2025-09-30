@@ -12,6 +12,7 @@
 	let hasFormData = $state(false);
 
 	export async function handleSubmit(formData: FormData) {
+		console.log('Form submitted with data:', formData);
 		hasFormData = true;
 		status = 'loading';
 		data = [];

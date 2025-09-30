@@ -56,7 +56,7 @@
 	$effect(() => {
 		if (formData.startDate && formData.endDate) {
 			status = 'loading-destinations';
-			console.log('Fetching data with:', formData);
+			console.log('Fetching data with:', $state.snapshot(formData));
 			fetch(`${API_BASE_URL}/geoloc?startDate=${formData.startDate}&endDate=${formData.endDate}`, {
 				method: 'GET',
 				headers: { 'x-api-key': 'bjnet_web_dev' }
@@ -71,6 +71,10 @@
 				})
 				.catch((error) => {
 					console.error('Error fetching data:', error);
+					destinations = [];
+					formData.country = '';
+					formData.region = '';
+					formData.city = '';
 				})
 				.finally(() => {
 					status = 'idle';
@@ -84,7 +88,7 @@
 			return;
 		}
 		status = 'loading-results';
-		onsubmit(formData);
+		onsubmit($state.snapshot(formData));
 		// Reset status after a short delay to allow components to start loading
 		setTimeout(() => {
 			status = 'idle';
