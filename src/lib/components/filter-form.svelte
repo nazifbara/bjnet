@@ -57,9 +57,16 @@
 		if (formData.startDate && formData.endDate) {
 			status = 'loading-destinations';
 			console.log('Fetching data with:', $state.snapshot(formData));
-			fetch(`${API_BASE_URL}/geoloc?startDate=${formData.startDate}&endDate=${formData.endDate}`, {
-				method: 'GET',
-				headers: { 'x-api-key': 'bjnet_web_dev' }
+			fetch(`${API_BASE_URL}/geoloc`, {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+					'x-api-key': 'bjnet_web_dev'
+				},
+				body: JSON.stringify({
+					startDate: formData.startDate,
+					endDate: formData.endDate
+				})
 			})
 				.then((response) => response.json())
 				.then((data: { destinations: Destination[] } | { error: string }) => {
