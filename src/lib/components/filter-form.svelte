@@ -27,6 +27,8 @@
 	let status: 'idle' | 'loading-destinations' | 'loading-results' | 'error-results' =
 		$state('idle');
 
+	$inspect({ destinations });
+
 	// Derived states for button enabling
 	let isFormValid = $derived(formData.startDate && formData.endDate);
 	let isSearchDisabled = $derived(!isFormValid || status !== 'idle');
@@ -69,12 +71,13 @@
 				})
 			})
 				.then((response) => response.json())
-				.then((data: { destinations: Destination[] } | { error: string }) => {
+				.then((data: { results: Destination[] } | { error: string }) => {
+					console.log(data);
 					if ('error' in data) {
 						throw new Error(data.error);
 					}
 					console.log('Fetched data:', data);
-					destinations = data.destinations;
+					destinations = data.results;
 				})
 				.catch((error) => {
 					console.error('Error fetching data:', error);
