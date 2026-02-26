@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { Loader2Icon } from '@lucide/svelte';
 	import type { FormData } from '$lib/types';
-	import Histogram from '$lib/components/histogram.svelte';
+	import PieChart from '$lib/components/pie-chart.svelte';
 	import * as Card from '$lib/components/ui/card';
 	import { fetchBandwidthDistributionData } from '$lib/api';
 
@@ -93,12 +93,16 @@
 				<div class="space-y-4">
 					<h4 class="text-center font-medium">Bandwidth Distribution by ISP</h4>
 					{#if uploadDistribution.length > 0 || downloadDistribution.length > 0}
-						<Histogram
-							data1={uploadDistribution}
-							data2={downloadDistribution}
-							label1="Upload"
-							label2="Download"
-						/>
+						<div class="grid grid-cols-1 gap-8 md:grid-cols-2">
+							<div>
+								<h5 class="mb-4 text-center text-sm font-medium">Upload</h5>
+								<PieChart data={uploadDistribution} />
+							</div>
+							<div>
+								<h5 class="mb-4 text-center text-sm font-medium">Download</h5>
+								<PieChart data={downloadDistribution} />
+							</div>
+						</div>
 					{:else}
 						<p class="text-center text-muted-foreground">No data available</p>
 					{/if}
