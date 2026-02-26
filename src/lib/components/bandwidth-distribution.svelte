@@ -90,18 +90,39 @@
 				</div>
 
 				<!-- Chart -->
-				<div class="space-y-4">
+				<div class="space-y-6">
 					<h4 class="text-center font-medium">Bandwidth Distribution by ISP</h4>
 					{#if uploadDistribution.length > 0 || downloadDistribution.length > 0}
 						<div class="grid grid-cols-1 gap-8 md:grid-cols-2">
 							<div>
 								<h5 class="mb-4 text-center text-sm font-medium">Upload</h5>
-								<PieChart data={uploadDistribution} />
+								<PieChart data={uploadDistribution} showLegend={false} />
 							</div>
 							<div>
 								<h5 class="mb-4 text-center text-sm font-medium">Download</h5>
-								<PieChart data={downloadDistribution} />
+								<PieChart data={downloadDistribution} showLegend={false} />
 							</div>
+						</div>
+
+						<!-- Combined ISP Legend -->
+						<div class="mt-8 flex flex-wrap gap-4">
+							{#each Array.from(new Set([...uploadDistribution, ...downloadDistribution].map((d) => d.range))) as isp, index}
+								<div class="flex items-center space-x-2">
+									<div
+										class="h-3 w-3 rounded-full"
+										style="background-color: {[
+											'#2563eb',
+											'#dc2626',
+											'#16a34a',
+											'#ea580c',
+											'#7c3aed',
+											'#0891b2',
+											'#be185d'
+										][index % 7]}"
+									></div>
+									<span class="text-sm">{isp}</span>
+								</div>
+							{/each}
 						</div>
 					{:else}
 						<p class="text-center text-muted-foreground">No data available</p>

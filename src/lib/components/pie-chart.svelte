@@ -3,9 +3,10 @@
 
 	type Props = {
 		data: { range: string; percent: number }[];
+		showLegend?: boolean;
 	};
 
-	let { data }: Props = $props();
+	let { data, showLegend = true }: Props = $props();
 
 	let container: HTMLDivElement;
 
@@ -76,7 +77,7 @@
 <div bind:this={container} class="flex w-full justify-center"></div>
 
 <!-- Legend -->
-{#if data.length > 0}
+{#if showLegend && data.length > 0}
 	<div class="mt-4 flex flex-col space-y-2">
 		{#each data as item, index}
 			<div class="flex items-center space-x-2">
