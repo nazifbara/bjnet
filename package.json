@@ -24,6 +24,7 @@
 		"@sveltejs/vite-plugin-svelte": "^6.0.0",
 		"@tailwindcss/vite": "^4.0.0",
 		"@types/d3": "^7.4.3",
+		"@types/jsonwebtoken": "^9.0.10",
 		"bits-ui": "^2.8.6",
 		"clsx": "^2.1.1",
 		"eslint": "^9.18.0",
@@ -50,6 +51,7 @@
 	},
 	"dependencies": {
 		"d3": "^7.9.0",
+		"jsonwebtoken": "^9.0.3",
 		"lucide": "^0.536.0"
 	}
 }

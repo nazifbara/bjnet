@@ -115,11 +115,11 @@ export async function fetchStreamData(formData: FormData): Promise<StreamRespons
 	return apiFetch<StreamResponse>('streams', formData);
 }
 
-interface BandwidthResult {
+export interface BandwidthResult {
 	isp: string;
 	sessions: number;
-	upload_kbps: number;
-	download_kbps: number;
+	upload_mbps: number;
+	download_mbps: number;
 }
 
 interface BandwidthResponse {

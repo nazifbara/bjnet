@@ -2,17 +2,10 @@
 	import { Loader2Icon } from '@lucide/svelte';
 	import type { FormData } from '$lib/types';
 	import * as Card from '$lib/components/ui/card';
-	import GroupedBarChart from '$lib/components/grouped-bar-chart.svelte';
-	import { fetchBandwithData } from '$lib/api';
+	import GroupedBarChartMbps from '$lib/components/grouped-bar-chart-mbps.svelte';
+	import { fetchBandwithData, type BandwidthResult } from '$lib/api';
 
-	type BandwidthData = {
-		isp: string;
-		sessions: number;
-		upload_kbps: number;
-		download_kbps: number;
-	};
-
-	let data = $state<BandwidthData[]>([]);
+	let data = $state<BandwidthResult[]>([]);
 	let status: 'idle' | 'loading' | 'error' = $state('idle');
 	let errorMessage: string | null = $state(null);
 	let hasFormData = $state(false);
@@ -82,7 +75,7 @@
 				</div>
 
 				<!-- Chart -->
-				<GroupedBarChart {data} />
+				<GroupedBarChartMbps {data} />
 			</div>
 		{:else}
 			<p>No data available for this period</p>
