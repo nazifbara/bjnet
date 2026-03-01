@@ -48,9 +48,9 @@
 	<Sessions bind:this={sessionsComponent} />
 	<Latency bind:this={latencyComponent} />
 	<PacketLoss bind:this={packetLossComponent} />
-	<Retransmissions bind:this={retransmissionsComponent} />
-	<BandwidthDistribution bind:this={bandwidthDistributionComponent} />
-	<ISP bind:this={ispComponent} />
-	<Streams bind:this={streamsComponent} />
 	<Acknowledgment bind:this={acknowledgmentComponent} />
+	<Streams bind:this={streamsComponent} />
+	<Retransmissions bind:this={retransmissionsComponent} />
+	<ISP bind:this={ispComponent} />
+	<BandwidthDistribution bind:this={bandwidthDistributionComponent} />
 </div>
