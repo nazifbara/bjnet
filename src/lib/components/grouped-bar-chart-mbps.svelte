@@ -38,7 +38,8 @@
 			.domain(data.map((d) => d.isp))
 			.padding(0.2);
 
-		const y = d3.scaleLinear().range([height, 0]).domain([0, 1500]);
+		// UPDATE: Domain changed from [0, 1500] to [0, 120]
+		const y = d3.scaleLinear().range([height, 0]).domain([0, 120]);
 
 		// Add X axis
 		svg
@@ -55,12 +56,13 @@
 			.call(
 				d3
 					.axisLeft(y)
-					.ticks(5)
-					.tickValues(d3.range(0, 1501, 300))
+					// UPDATE: Set tick values explicitly from 0 to 120 with step of 20
+					// d3.range(0, 121, 20) results in [0, 20, 40, 60, 80, 100, 120]
+					.tickValues(d3.range(0, 121, 20))
 			)
 			.append('text')
 			.attr('transform', 'rotate(-90)')
-			.attr('y', -margin.left + 20)
+			.attr('y', -margin.left + 50) // Adjusted slightly for better centering
 			.attr('x', -(height / 2))
 			.attr('text-anchor', 'middle')
 			.attr('fill', 'currentColor')
@@ -98,9 +100,9 @@
 			)
 			.join('rect')
 			.attr('x', (d) => xSubgroup(d.key)!)
-			.attr('y', (d) => y(d.value))
+			.attr('y', (d) => y(Math.min(d.value, 120))) // Clamp value to 120 to prevent bars from escaping the top
 			.attr('width', xSubgroup.bandwidth())
-			.attr('height', (d) => height - y(d.value))
+			.attr('height', (d) => height - y(Math.min(d.value, 120)))
 			.attr('fill', (d) => color(d.key) as string);
 
 		// Add legend
