@@ -4,9 +4,10 @@
 	type Props = {
 		data: { range: string; percent: number }[];
 		showLegend?: boolean;
+		showLabels?: boolean;
 	};
 
-	let { data, showLegend = true }: Props = $props();
+	let { data, showLegend = true, showLabels = true }: Props = $props();
 
 	let container: HTMLDivElement;
 
@@ -55,19 +56,21 @@
 			.style('stroke', 'white')
 			.style('stroke-width', '3px'); // Thicker border for better contrast at larger sizes
 
-		// Add labels
-		svg
-			.selectAll('text')
-			.data(arcs)
-			.enter()
-			.append('text')
-			.attr('transform', (d) => `translate(${arc.centroid(d as any)})`)
-			.attr('text-anchor', 'middle')
-			.style('font-size', '16px') // Increased font size for readability
-			.style('font-weight', '700')
-			.style('fill', 'white')
-			.style('pointer-events', 'none')
-			.text((d) => `${d.data.percent}%`);
+		if (showLabels) {
+			// Add labels
+			svg
+				.selectAll('text')
+				.data(arcs)
+				.enter()
+				.append('text')
+				.attr('transform', (d) => `translate(${arc.centroid(d as any)})`)
+				.attr('text-anchor', 'middle')
+				.style('font-size', '16px') // Increased font size for readability
+				.style('font-weight', '700')
+				.style('fill', 'white')
+				.style('pointer-events', 'none')
+				.text((d) => `${d.data.percent}%`);
+		}
 	}
 
 	$effect(() => {

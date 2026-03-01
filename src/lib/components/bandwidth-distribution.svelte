@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Loader2Icon } from '@lucide/svelte';
+	import { Loader2Icon, ArrowUpIcon, ArrowDownIcon } from '@lucide/svelte';
 	import type { FormData } from '$lib/types';
 	import PieChart from '$lib/components/pie-chart.svelte';
 	import * as Card from '$lib/components/ui/card';
@@ -96,18 +96,18 @@
 						<div class="grid grid-cols-1 gap-8 md:grid-cols-2">
 							<div>
 								<h5 class="mb-4 text-center text-sm font-medium">Upload</h5>
-								<PieChart data={uploadDistribution} showLegend={false} />
+								<PieChart data={uploadDistribution} showLegend={false} showLabels={false} />
 							</div>
 							<div>
 								<h5 class="mb-4 text-center text-sm font-medium">Download</h5>
-								<PieChart data={downloadDistribution} showLegend={false} />
+								<PieChart data={downloadDistribution} showLegend={false} showLabels={false} />
 							</div>
 						</div>
 
 						<!-- Combined ISP Legend -->
 						<div class="mt-8 flex flex-wrap gap-4">
-							{#each Array.from(new Set([...uploadDistribution, ...downloadDistribution].map((d) => d.range))) as isp, index}
-								<div class="flex items-center space-x-2">
+							{#each Array.from(downloadDistribution.map((d) => d.range)) as isp, index}
+								<div class="flex items-center gap-1 rounded-2xl border p-2 text-sm">
 									<div
 										class="h-3 w-3 rounded-full"
 										style="background-color: {[
@@ -120,7 +120,15 @@
 											'#be185d'
 										][index % 7]}"
 									></div>
-									<span class="text-sm">{isp}</span>
+									<div>{isp}</div>
+									<span class="flex items-center text-sm font-medium">
+										<ArrowDownIcon size={18} />
+										{downloadDistribution[index].percent} %
+									</span>
+									<span class="flex items-center text-sm font-medium">
+										<ArrowUpIcon size={18} />
+										{uploadDistribution[index].percent} %
+									</span>
 								</div>
 							{/each}
 						</div>
