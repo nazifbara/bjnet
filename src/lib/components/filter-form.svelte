@@ -55,7 +55,7 @@
 			.map((city) => ({ value: city, label: city }))
 	);
 
-	$effect(() => {
+	function onDateChange() {
 		if (formData.startDate && formData.endDate) {
 			status = 'loading-destinations';
 			console.log('Fetching data with:', $state.snapshot(formData));
@@ -90,7 +90,7 @@
 					status = 'idle';
 				});
 		}
-	});
+	}
 
 	function handleSubmit() {
 		if (!formData.startDate || !formData.endDate) {
@@ -139,6 +139,7 @@
 				name="startDate"
 				placeholder="Date de début"
 				bind:value={formData.startDate}
+				onchange={onDateChange}
 				disabled={status !== 'idle'}
 			/>
 			<Input
@@ -146,6 +147,7 @@
 				name="endDate"
 				placeholder="Date de fin"
 				bind:value={formData.endDate}
+				onchange={onDateChange}
 				disabled={status !== 'idle'}
 			/>
 			{#if !ips}
