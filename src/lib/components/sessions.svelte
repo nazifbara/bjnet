@@ -22,11 +22,13 @@
 
 		try {
 			const result = await fetchServiceLevelData(formData);
+
 			if (!result) {
 				status = 'error';
 				errorMessage = 'No data available for this period';
 				return;
 			}
+
 			sessionCount = result.session_count;
 			downloadDist = Object.entries(result.download_mbps_distribution || {}).map(
 				([range, percent]) => ({
@@ -40,6 +42,7 @@
 					percent: parseFloat(percent)
 				})
 			);
+			console.log({ result, downloadDist, uploadDist });
 		} catch (error) {
 			console.error('Error submitting form:', error);
 			status = 'error';
@@ -76,7 +79,7 @@
 			<p class="text-destructive">
 				{errorMessage}
 			</p>
-		{:else if sessionCount > 0}
+		{:else}
 			<div class="space-y-6">
 				<!-- Statistics Summary -->
 				<div class="grid grid-cols-1 gap-4 md:grid-cols-1">
@@ -89,8 +92,6 @@
 				<!-- Chart -->
 				<Histogram data1={downloadDist} data2={uploadDist} label1="Download" label2="Upload" />
 			</div>
-		{:else}
-			<p>No data available for this period</p>
 		{/if}
 	</Card.Content>
 </Card.Root>
