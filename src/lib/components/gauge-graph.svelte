@@ -19,7 +19,8 @@
 	const getColor = (val: number) => {
 		if (val < 0.5) return '#22c55e';
 		if (val <= 0.8) return '#f59e0b';
-		return '#ef4444';
+		if (val <= 1.2) return '#ef4444';
+		return '#b91c1c'; // Color for Very High
 	};
 
 	function renderGauge() {
@@ -51,10 +52,12 @@
 			.sort(null)
 			.value((d) => d.value);
 
+		// Updated segments to include Very High
 		const segments = [
 			{ label: 'Low', value: 0.5, color: '#22c55e' },
 			{ label: 'Moderate', value: 0.3, color: '#f59e0b' },
-			{ label: 'High', value: 0.7, color: '#ef4444' }
+			{ label: 'High', value: 0.4, color: '#ef4444' },
+			{ label: 'Very High', value: 0.3, color: '#b91c1c' }
 		];
 
 		svg
