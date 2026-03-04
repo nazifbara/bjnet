@@ -82,14 +82,14 @@
 	<div bind:this={container} class="flex w-full justify-center"></div>
 
 	{#if showLegend && data.length > 0}
-		<div class="mt-8 grid grid-cols-1 gap-x-8 gap-y-3 sm:grid-cols-2 lg:grid-cols-3">
+		<div class="mt-8 grid grid-cols-[repeat(auto-fit,_minmax(200px,_1fr))]">
 			{#each data as item, index}
-				<div class="flex items-center space-x-3">
+				<div class="grid grid-cols-[auto_1fr] items-center space-x-3">
 					<div
 						class="h-4 w-4 rounded-sm"
 						style="background-color: {colors[index % colors.length]}"
 					></div>
-					<span class="text-sm font-semibold text-gray-700">{item.range}</span>
+					<span class="text-sm font-semibold">{item.range}</span>
 				</div>
 			{/each}
 		</div>

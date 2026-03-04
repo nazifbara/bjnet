@@ -106,16 +106,18 @@
 				</div>
 
 				<!-- Charts -->
-				<!-- Loss Trigger Distribution (Donut Chart) -->
-				<div class="space-y-4">
-					<h4 class="text-center font-medium">Retransmission Causes</h4>
-					<PieChart data={lossTriggerData} />
-				</div>
+				<div class="grid grid-cols-1 gap-6 lg:grid-cols-2">
+					<!-- Loss Trigger Distribution (Donut Chart) -->
+					<div class="space-y-4">
+						<h4 class="text-center font-medium">Retransmission Causes</h4>
+						<PieChart data={lossTriggerData} />
+					</div>
 
-				<!-- Packet Loss Rate Distribution (Histogram) -->
-				<div class="space-y-4">
-					<h4 class="text-center font-medium">Loss Rate Distribution</h4>
-					<Histogram data1={packetLossRateData} data2={[]} label1="Loss Rate" label2="" />
+					<!-- Packet Loss Rate Distribution (Histogram) -->
+					<div class="space-y-4">
+						<h4 class="text-center font-medium">Loss Rate Distribution</h4>
+						<Histogram data1={packetLossRateData} data2={[]} label1="Loss Rate" label2="" />
+					</div>
 				</div>
 			</div>
 		{:else}
