@@ -17,18 +17,18 @@
 	let barContainer: HTMLDivElement;
 
 	const getColor = (val: number) => {
-		if (val < 0.5) return '#22c55e';
-		if (val <= 0.8) return '#f59e0b';
-		if (val <= 1.2) return '#ef4444';
-		return '#b91c1c'; // Color for Very High
+		if (val < 0.375) return '#22c55e';
+		if (val <= 0.75) return '#f59e0b';
+		if (val <= 1.125) return '#ef4444';
+		return '#b91c1c';
 	};
 
 	function renderGauge() {
 		if (!gaugeContainer) return;
 		gaugeContainer.innerHTML = '';
 
-		const width = 300;
-		const height = 240;
+		const width = 340;
+		const height = 260;
 		const svg = d3
 			.select(gaugeContainer)
 			.append('svg')
@@ -36,52 +36,88 @@
 			.append('g')
 			.attr('transform', `translate(${width / 2}, ${height - 60})`);
 
-		const radius = 120;
+		const radius = 130;
 		const numValue = data.congestion_index.avg;
 
 		const arc = d3
 			.arc()
-			.innerRadius(radius * 0.7)
+			.innerRadius(radius * 0.65)
 			.outerRadius(radius)
-			.cornerRadius(5);
+			.cornerRadius(2);
 
 		const pie = d3
 			.pie()
 			.startAngle(-Math.PI / 2)
 			.endAngle(Math.PI / 2)
 			.sort(null)
-			.value((d) => d.value);
+			.value(1);
 
-		// Updated segments to include Very High
 		const segments = [
-			{ label: 'Low', value: 0.5, color: '#22c55e' },
-			{ label: 'Moderate', value: 0.3, color: '#f59e0b' },
-			{ label: 'High', value: 0.4, color: '#ef4444' },
-			{ label: 'Very High', value: 0.3, color: '#b91c1c' }
+			{ label: 'LOW', color: '#22c55e', limit: '0.38' },
+			{ label: 'MOD', color: '#f59e0b', limit: '0.75' },
+			{ label: 'HIGH', color: '#ef4444', limit: '1.13' },
+			{ label: 'V.HIGH', color: '#b91c1c', limit: '1.50' }
 		];
 
-		svg
-			.selectAll('path')
-			.data(pie(segments))
+		const arcs = svg
+			.selectAll('g.arc')
+			.data(pie(segments as any))
 			.enter()
+			.append('g')
+			.attr('class', 'arc');
+
+		arcs
 			.append('path')
 			.attr('d', arc as any)
 			.attr('fill', (d) => (d.data as any).color)
-			.attr('opacity', 0.8);
+			.attr('opacity', 0.9)
+			.attr('stroke', 'white')
+			.attr('stroke-width', '2px');
 
-		const scale = d3
+		// Category Labels (Inside segments)
+		arcs
+			.append('text')
+			.attr('transform', (d) => `translate(${arc.centroid(d as any)})`)
+			.attr('dy', '0.35em')
+			.attr('text-anchor', 'middle')
+			.attr('fill', 'white')
+			.style('font-size', '10px')
+			.style('font-weight', 'bold')
+			.text((d) => (d.data as any).label);
+
+		// Numerical Labels (At segment ends)
+		const tickScale = d3
 			.scaleLinear()
 			.domain([0, 1.5])
 			.range([-Math.PI / 2, Math.PI / 2]);
-		const angle = scale(Math.min(numValue, 1.5));
+		const ticks = [0, 0.38, 0.75, 1.13, 1.5];
+
+		svg
+			.selectAll('.tick')
+			.data(ticks)
+			.enter()
+			.append('text')
+			.attr('x', (d) => Math.cos(tickScale(d) - Math.PI / 2) * (radius + 15))
+			.attr('y', (d) => Math.sin(tickScale(d) - Math.PI / 2) * (radius + 15))
+			.attr('text-anchor', 'middle')
+			.attr('fill', '#94a3b8')
+			.style('font-size', '11px')
+			.text((d) => d);
+
+		const needleScale = d3
+			.scaleLinear()
+			.domain([0, 1.5])
+			.range([-Math.PI / 2, Math.PI / 2]);
+
+		const angle = needleScale(Math.min(numValue, 1.5));
 
 		svg
 			.append('line')
 			.attr('x1', 0)
 			.attr('y1', 0)
-			.attr('x2', Math.sin(angle) * radius * 0.9)
-			.attr('y2', -Math.cos(angle) * radius * 0.9)
-			.attr('stroke', '#475569')
+			.attr('x2', Math.sin(angle) * radius * 0.85)
+			.attr('y2', -Math.cos(angle) * radius * 0.85)
+			.attr('stroke', '#1e293b')
 			.attr('stroke-width', 4)
 			.attr('stroke-linecap', 'round');
 
@@ -178,9 +214,9 @@
 	});
 </script>
 
-<div class="grid grid-cols-1 gap-8 rounded-xl p-8 md:grid-cols-2">
+<div class="grid grid-cols-1 gap-8 p-8 md:grid-cols-2">
 	<div class="flex flex-col items-center">
-		<div bind:this={gaugeContainer} class="w-full max-w-[300px]"></div>
+		<div bind:this={gaugeContainer} class="w-full max-w-[340px]"></div>
 
 		<div class="mt-2 flex w-full max-w-[280px] justify-between border-t pt-4">
 			<div class="text-center">
@@ -195,7 +231,7 @@
 	</div>
 
 	<div class="flex flex-col justify-center">
-		<h3 class="mb-4 text-center font-semibold text-slate-900">Session Distribution (%)</h3>
+		<h3 class="mb-4 text-center font-semibold">Session Distribution (%)</h3>
 		<div bind:this={barContainer} class="w-full"></div>
 	</div>
 </div>
