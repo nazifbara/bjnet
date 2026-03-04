@@ -16,11 +16,10 @@
 	let gaugeContainer: HTMLDivElement;
 	let barContainer: HTMLDivElement;
 
-	// UPDATE: Helper to get color based on value, updated for light theme brightness
 	const getColor = (val: number) => {
-		if (val < 0.5) return '#22c55e'; // Brighter Green
-		if (val <= 0.8) return '#f59e0b'; // Brighter Orange/Yellow
-		return '#ef4444'; // Brighter Red
+		if (val < 0.5) return '#22c55e';
+		if (val <= 0.8) return '#f59e0b';
+		return '#ef4444';
 	};
 
 	function renderGauge() {
@@ -28,18 +27,17 @@
 		gaugeContainer.innerHTML = '';
 
 		const width = 300;
-		const height = 220;
+		const height = 240;
 		const svg = d3
 			.select(gaugeContainer)
 			.append('svg')
 			.attr('viewBox', `0 0 ${width} ${height}`)
 			.append('g')
-			.attr('transform', `translate(${width / 2}, ${height - 40})`);
+			.attr('transform', `translate(${width / 2}, ${height - 60})`);
 
 		const radius = 120;
 		const numValue = data.congestion_index.avg;
 
-		// Create the background arcs
 		const arc = d3
 			.arc()
 			.innerRadius(radius * 0.7)
@@ -53,14 +51,12 @@
 			.sort(null)
 			.value((d) => d.value);
 
-		// UPDATE: Background segments with brighter colors for light theme
 		const segments = [
 			{ label: 'Low', value: 0.5, color: '#22c55e' },
 			{ label: 'Moderate', value: 0.3, color: '#f59e0b' },
 			{ label: 'High', value: 0.7, color: '#ef4444' }
 		];
 
-		// Draw Arcs
 		svg
 			.selectAll('path')
 			.data(pie(segments))
@@ -70,44 +66,40 @@
 			.attr('fill', (d) => (d.data as any).color)
 			.attr('opacity', 0.8);
 
-		// Needle Logic
 		const scale = d3
 			.scaleLinear()
 			.domain([0, 1.5])
 			.range([-Math.PI / 2, Math.PI / 2]);
 		const angle = scale(Math.min(numValue, 1.5));
 
-		// Needle Shape - UPDATE: Darker color for visibility on light background
 		svg
 			.append('line')
 			.attr('x1', 0)
 			.attr('y1', 0)
 			.attr('x2', Math.sin(angle) * radius * 0.9)
 			.attr('y2', -Math.cos(angle) * radius * 0.9)
-			.attr('stroke', '#475569') // Darker Slate
+			.attr('stroke', '#475569')
 			.attr('stroke-width', 4)
 			.attr('stroke-linecap', 'round');
 
-		// UPDATE: Darker center circle for visibility
-		svg.append('circle').attr('r', 8).attr('fill', '#1e293b'); // Dark Slate
+		svg.append('circle').attr('r', 8).attr('fill', '#1e293b');
 
-		// Central Value Text - Color dynamically set by getColor (now brighter)
 		svg
 			.append('text')
-			.attr('y', -30)
+			.attr('y', -35)
 			.attr('text-anchor', 'middle')
 			.attr('fill', getColor(numValue))
-			.style('font-size', '32px')
+			.style('font-size', '34px')
 			.style('font-weight', 'bold')
 			.text(numValue.toFixed(2));
 
-		// UPDATE: Darker text for description on light background
 		svg
 			.append('text')
-			.attr('y', 0)
+			.attr('y', 35)
 			.attr('text-anchor', 'middle')
-			.attr('fill', '#64748b') // Darker Grey/Slate
-			.style('font-size', '14px')
+			.attr('fill', '#64748b')
+			.style('font-size', '15px')
+			.style('font-weight', '500')
 			.text('Congestion Index');
 	}
 
@@ -129,13 +121,12 @@
 			.append('g')
 			.attr('transform', `translate(${margin.left},${margin.top})`);
 
-		// Prepare Data - UPDATE: Dynamic colors updated to brighter versions
 		const dist = data.congestion_level_distribution;
 		const formattedData = [
 			{ label: 'Low', value: parseFloat(dist.low), color: '#22c55e' },
 			{ label: 'Moderate', value: parseFloat(dist.moderate), color: '#f59e0b' },
 			{ label: 'High', value: parseFloat(dist.high), color: '#ef4444' },
-			{ label: 'Very High', value: parseFloat(dist.very_high), color: '#b91c1c' } // Slightly brighter dark red
+			{ label: 'Very High', value: parseFloat(dist.very_high), color: '#b91c1c' }
 		];
 
 		const x = d3
@@ -145,14 +136,12 @@
 			.padding(0.3);
 		const y = d3.scaleLinear().range([height, 0]).domain([0, 100]);
 
-		// X Axis - UPDATE: Darker color for labels on light background
 		svg
 			.append('g')
 			.attr('transform', `translate(0,${height})`)
 			.call(d3.axisBottom(x))
-			.attr('color', '#64748b'); // Darker Slate
+			.attr('color', '#64748b');
 
-		// Bars
 		svg
 			.selectAll('rect')
 			.data(formattedData)
@@ -165,7 +154,6 @@
 			.attr('fill', (d) => d.color)
 			.attr('rx', 4);
 
-		// Labels on top of bars - UPDATE: Darker text for visibility above bars on light background
 		svg
 			.selectAll('.label')
 			.data(formattedData)
@@ -174,7 +162,7 @@
 			.attr('x', (d) => x(d.label)! + x.bandwidth() / 2)
 			.attr('y', (d) => y(d.value) - 5)
 			.attr('text-anchor', 'middle')
-			.attr('fill', '#1e293b') // Dark Slate
+			.attr('fill', '#1e293b')
 			.style('font-size', '12px')
 			.text((d) => d.value + '%');
 	}
@@ -187,11 +175,11 @@
 	});
 </script>
 
-<div class="grid grid-cols-1 gap-8 md:grid-cols-2">
+<div class="grid grid-cols-1 gap-8 rounded-xl p-8 md:grid-cols-2">
 	<div class="flex flex-col items-center">
 		<div bind:this={gaugeContainer} class="w-full max-w-[300px]"></div>
 
-		<div class="mt-2 flex w-full max-w-[280px] justify-between border-t border-slate-200 pt-4">
+		<div class="mt-2 flex w-full max-w-[280px] justify-between border-t pt-4">
 			<div class="text-center">
 				<p class="text-xs tracking-wider uppercase">P50 (Median)</p>
 				<p class="text-xl font-bold">{data.congestion_index.p50}</p>
@@ -204,7 +192,7 @@
 	</div>
 
 	<div class="flex flex-col justify-center">
-		<h3 class="mb-4 text-center font-semibold">Session Distribution (%)</h3>
+		<h3 class="mb-4 text-center font-semibold text-slate-900">Session Distribution (%)</h3>
 		<div bind:this={barContainer} class="w-full"></div>
 	</div>
 </div>
