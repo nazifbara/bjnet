@@ -123,11 +123,11 @@
 									<div>{isp}</div>
 									<span class="flex items-center text-sm font-medium">
 										<ArrowDownIcon size={18} />
-										{downloadDistribution[index].percent} %
+										{downloadDistribution[index].percent}%
 									</span>
 									<span class="flex items-center text-sm font-medium">
 										<ArrowUpIcon size={18} />
-										{uploadDistribution[index].percent} %
+										{uploadDistribution[index].percent}%
 									</span>
 								</div>
 							{/each}

@@ -9,6 +9,7 @@
 	import Acknowledgment from '$lib/components/acknowledgment.svelte';
 	import FilterForm from '$lib/components/filter-form.svelte';
 	import type { FormData } from '$lib/types';
+	import Congestion from '$lib/components/congestion.svelte';
 
 	let sessionsComponent: Sessions;
 	let latencyComponent: Latency;
@@ -18,6 +19,7 @@
 	let ispComponent: ISP;
 	let streamsComponent: Streams;
 	let acknowledgmentComponent: Acknowledgment;
+	let congestionComponent: Congestion;
 
 	function handleFormSubmit(formData: FormData) {
 		sessionsComponent?.handleSubmit(formData);
@@ -28,6 +30,7 @@
 		ispComponent?.handleSubmit(formData);
 		streamsComponent?.handleSubmit(formData);
 		acknowledgmentComponent?.handleSubmit(formData);
+		congestionComponent?.handleSubmit(formData);
 	}
 
 	function handleFormReset() {
@@ -39,6 +42,7 @@
 		ispComponent?.handleReset();
 		streamsComponent?.handleReset();
 		acknowledgmentComponent?.handleReset();
+		congestionComponent?.handleReset();
 	}
 </script>
 
@@ -50,6 +54,7 @@
 	<PacketLoss bind:this={packetLossComponent} />
 	<Acknowledgment bind:this={acknowledgmentComponent} />
 	<Streams bind:this={streamsComponent} />
+	<Congestion bind:this={congestionComponent} />
 	<Retransmissions bind:this={retransmissionsComponent} />
 	<ISP bind:this={ispComponent} />
 	<BandwidthDistribution bind:this={bandwidthDistributionComponent} />

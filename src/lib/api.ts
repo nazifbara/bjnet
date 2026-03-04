@@ -82,6 +82,21 @@ export async function fetchPacketLossData(formData: FormData): Promise<PacketLos
 	return apiFetch<PacketLossResponse>('packetLoss', formData);
 }
 
+export type CongestionData = {
+	session_count: number;
+	congestion_index: { avg: number; p50: number; p90: number };
+	congestion_level_distribution: {
+		low: string;
+		moderate: string;
+		high: string;
+		very_high: string;
+	};
+};
+
+export async function fetchCongestionData(formData: FormData): Promise<CongestionData | null> {
+	return apiFetch<CongestionData>('congestion', formData);
+}
+
 interface RetransmissionResponse {
 	session_count: number;
 	total_packets_lost: number;
