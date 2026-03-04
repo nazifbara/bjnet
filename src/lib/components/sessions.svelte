@@ -7,7 +7,7 @@
 
 	let downloadDist = $state<{ range: string; percent: number }[]>([]);
 	let uploadDist = $state<{ range: string; percent: number }[]>([]);
-	let sessionCount = $state(0);
+	let sessionCount = $state({ download: 0, upload: 0 });
 	let status: 'idle' | 'loading' | 'error' = $state('idle');
 	let errorMessage: string | null = $state(null);
 	let hasFormData = $state(false);
@@ -18,7 +18,7 @@
 		status = 'loading';
 		downloadDist = [];
 		uploadDist = [];
-		sessionCount = 0;
+		sessionCount = { download: 0, upload: 0 };
 
 		try {
 			const result = await fetchServiceLevelData(formData);
@@ -28,8 +28,9 @@
 				errorMessage = 'No data available for this period';
 				return;
 			}
-
-			sessionCount = result.session_count;
+			console.log(result);
+			sessionCount.download = result.download_session_count;
+			sessionCount.upload = result.upload_session_count;
 			downloadDist = Object.entries(result.download_mbps_distribution || {}).map(
 				([range, percent]) => ({
 					range,
@@ -59,7 +60,7 @@
 		hasFormData = false;
 		downloadDist = [];
 		uploadDist = [];
-		sessionCount = 0;
+		sessionCount = { download: 0, upload: 0 };
 		status = 'idle';
 		errorMessage = null;
 	}
@@ -82,10 +83,15 @@
 		{:else}
 			<div class="space-y-6">
 				<!-- Statistics Summary -->
-				<div class="grid grid-cols-1 gap-4 md:grid-cols-1">
+				<div class="grid grid-cols-1 gap-4 md:grid-cols-2">
 					<div class="rounded-lg bg-muted/50 p-4 text-center">
-						<div class="text-2xl font-bold">{sessionCount}</div>
-						<div class="text-sm text-muted-foreground">Sessions analyzed</div>
+						<div class="text-2xl font-bold">{sessionCount.download}</div>
+						<div class="text-sm text-muted-foreground">Download Sessions Analyzed</div>
+					</div>
+
+					<div class="rounded-lg bg-muted/50 p-4 text-center">
+						<div class="text-2xl font-bold">{sessionCount.upload}</div>
+						<div class="text-sm text-muted-foreground">Upload Sessions Analyzed</div>
 					</div>
 				</div>
 

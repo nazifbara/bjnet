@@ -52,8 +52,9 @@ async function apiFetch<T>(
 	}
 }
 
-interface ServiceLevelResponse {
-	session_count: number;
+export interface ServiceLevelResponse {
+	download_session_count: number;
+	upload_session_count: number;
 	download_mbps_distribution: Record<string, string>;
 	upload_mbps_distribution: Record<string, string>;
 }
