@@ -56,9 +56,10 @@
 
 <Card.Root>
 	<Card.Header>
-		<Card.Title>Stream Concurrency Analysis</Card.Title>
+		<Card.Title>Concurrent QUIC Streams per Session</Card.Title>
 		<Card.Description>
-			Distribution of stream concurrency and analysis of simultaneous usage
+			Shows how many parallel QUIC streams are opened per session, reflecting the protocol’s
+			parallelization behavior.
 		</Card.Description>
 	</Card.Header>
 	<Card.Content>

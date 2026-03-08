@@ -50,9 +50,10 @@
 
 <Card.Root>
 	<Card.Header>
-		<Card.Title>Round-Trip Time (RTT) Analysis</Card.Title>
+		<Card.Title>Round-Trip Time Distribution</Card.Title>
 		<Card.Description>
-			Measurement of the time required for a packet to travel to destination and back
+			Displays the percentage of sessions grouped by latency ranges to assess network
+			responsiveness.
 		</Card.Description>
 	</Card.Header>
 	<Card.Content>

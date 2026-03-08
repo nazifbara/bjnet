@@ -44,9 +44,10 @@
 
 <Card.Root>
 	<Card.Header>
-		<Card.Title>Average Speeds by ISP</Card.Title>
+		<Card.Title>Average Bandwidth Performance by ISP</Card.Title>
 		<Card.Description>
-			Comparison of download and upload performance by internet service provider
+			Compares the average upload and download throughput measured toward different Internet Service
+			Providers.
 		</Card.Description>
 	</Card.Header>
 	<Card.Content>

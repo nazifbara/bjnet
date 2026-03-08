@@ -51,8 +51,11 @@
 
 <Card.Root>
 	<Card.Header>
-		<Card.Title>Packet Loss Analysis</Card.Title>
-		<Card.Description>Distribution of packets lost during transmission</Card.Description>
+		<Card.Title>Packet Loss Rate Distribution</Card.Title>
+		<Card.Description
+			>Illustrates the proportion of sessions experiencing different packet loss levels,
+			highlighting potential network degradation.</Card.Description
+		>
 	</Card.Header>
 	<Card.Content>
 		{#if !hasFormData}

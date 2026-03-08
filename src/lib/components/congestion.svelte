@@ -47,7 +47,11 @@
 
 <Card.Root>
 	<Card.Header>
-		<Card.Title>Congestion</Card.Title>
+		<Card.Title>Network Congestion Pressure Index</Card.Title>
+		<Card.Description>
+			Provides a synthetic indicator of congestion pressure derived from the ratio between bytes in
+			flight and the congestion window.
+		</Card.Description>
 	</Card.Header>
 	<Card.Content>
 		{#if !hasFormData}

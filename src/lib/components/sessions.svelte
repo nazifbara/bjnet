@@ -68,8 +68,11 @@
 
 <Card.Root>
 	<Card.Header>
-		<Card.Title>Session Bandwidth Distribution</Card.Title>
-		<Card.Description>Analysis of download and upload speeds across all sessions</Card.Description>
+		<Card.Title>Network Service Level Distribution</Card.Title>
+		<Card.Description
+			>Shows the percentage distribution of measured upload and download bandwidth across predefined
+			throughput ranges (Mbps).</Card.Description
+		>
 	</Card.Header>
 	<Card.Content>
 		{#if !hasFormData}

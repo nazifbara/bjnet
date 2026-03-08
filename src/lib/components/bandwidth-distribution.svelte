@@ -61,9 +61,10 @@
 
 <Card.Root>
 	<Card.Header>
-		<Card.Title>Bandwidth Distribution by ISP</Card.Title>
+		<Card.Title>Traffic Bandwidth Share by ISP</Card.Title>
 		<Card.Description>
-			Distribution of upload and download traffic across different internet service providers
+			Shows the percentage distribution of total upload and download bandwidth across different
+			ISPs.
 		</Card.Description>
 	</Card.Header>
 	<Card.Content>
@@ -106,7 +107,7 @@
 
 						<!-- Combined ISP Legend -->
 						<div class="mt-8 flex flex-wrap gap-4">
-							{#each Array.from(downloadDistribution.map((d) => d.range)) as isp, index}
+							{#each Array.from(downloadDistribution.map((d) => d.range)) as isp, index (index)}
 								<div class="flex items-center gap-1 rounded-2xl border p-2 text-sm">
 									<div
 										class="h-3 w-3 rounded-full"

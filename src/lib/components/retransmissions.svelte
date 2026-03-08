@@ -73,9 +73,10 @@
 
 <Card.Root>
 	<Card.Header>
-		<Card.Title>Retransmission Analysis</Card.Title>
+		<Card.Title>Packet Retransmission Analysis</Card.Title>
 		<Card.Description>
-			Shows how many packets were lost, main causes, and distribution of loss rates
+			Highlights the distribution and causes of retransmitted packets, indicating potential
+			reliability issues in network delivery.
 		</Card.Description>
 	</Card.Header>
 	<Card.Content>

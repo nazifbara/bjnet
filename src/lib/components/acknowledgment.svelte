@@ -50,8 +50,11 @@
 
 <Card.Root>
 	<Card.Header>
-		<Card.Title>Acknowledgment Delay Analysis</Card.Title>
-		<Card.Description>Time required to receive packet reception confirmation</Card.Description>
+		<Card.Title>Acknowledgment Delay Distribution</Card.Title>
+		<Card.Description
+			>Represents the distribution of acknowledgment delays observed during QUIC sessions,
+			indicating transport efficiency.</Card.Description
+		>
 	</Card.Header>
 	<Card.Content>
 		{#if !hasFormData}
