@@ -58,7 +58,7 @@
 	<Card.Header>
 		<Card.Title>Concurrent QUIC Streams per Session</Card.Title>
 		<Card.Description>
-			Shows how many parallel QUIC streams are opened per session, reflecting the protocol’s
+			Shows how many parallel QUIC streams are opened per session, reflecting the protocol's
 			parallelization behavior.
 		</Card.Description>
 	</Card.Header>
@@ -82,11 +82,9 @@
 				</div>
 
 				<!-- Charts -->
-				<div class="space-y-4">
+				<div class="grid grid-cols-[auto_1fr] items-center gap-4">
+					<DonutChart value={avgConcurrency} label="Streams" />
 					<Histogram data1={data} data2={[]} label1="Streams" label2="" />
-					<div class="flex justify-center">
-						<DonutChart value={avgConcurrency} label="Streams" />
-					</div>
 				</div>
 			</div>
 		{:else}
