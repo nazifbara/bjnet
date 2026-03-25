@@ -60,24 +60,8 @@
 				{errorMessage}
 			</p>
 		{:else if data.length > 0}
-			<div class="space-y-6">
-				<!-- Statistics Summary -->
-				<div class="grid grid-cols-1 gap-4 md:grid-cols-2">
-					<div class="rounded-lg bg-muted/50 p-4 text-center">
-						<div class="text-2xl font-bold">
-							{data.reduce((sum, item) => sum + item.sessions, 0)}
-						</div>
-						<div class="text-sm text-muted-foreground">Total sessions</div>
-					</div>
-					<div class="rounded-lg bg-muted/50 p-4 text-center">
-						<div class="text-2xl font-bold">{data.length}</div>
-						<div class="text-sm text-muted-foreground">ISPs analyzed</div>
-					</div>
-				</div>
-
-				<!-- Chart -->
-				<GroupedBarChartMbps {data} />
-			</div>
+			<!-- Chart -->
+			<GroupedBarChartMbps {data} />
 		{:else}
 			<p>No data available for this period</p>
 		{/if}

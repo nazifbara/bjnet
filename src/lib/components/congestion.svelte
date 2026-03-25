@@ -63,12 +63,6 @@
 				{errorMessage}
 			</p>
 		{:else if data}
-			<div class="mb-6 grid">
-				<div class="rounded-lg bg-muted/50 p-4 text-center">
-					<div class="text-2xl font-bold">{data.session_count}</div>
-					<div class="text-sm text-muted-foreground">Sessions analyzed</div>
-				</div>
-			</div>
 			<GaugeGraph {data} />
 		{/if}
 	</Card.Content>

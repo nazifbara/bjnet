@@ -72,20 +72,10 @@
 				{errorMessage}
 			</p>
 		{:else if count > 0}
-			<div class="space-y-6">
-				<!-- Statistics Summary -->
-				<div class="grid">
-					<div class="rounded-lg bg-muted/50 p-4 text-center">
-						<div class="text-2xl font-bold">{count}</div>
-						<div class="text-sm text-muted-foreground">Sessions analyzed</div>
-					</div>
-				</div>
-
-				<!-- Charts -->
-				<div class="grid grid-cols-[auto_1fr] items-center gap-4">
-					<DonutChart value={avgConcurrency} label="Streams" />
-					<Histogram data1={data} data2={[]} label1="Streams" label2="" />
-				</div>
+			<!-- Charts -->
+			<div class="grid grid-cols-[auto_1fr] items-center gap-4">
+				<DonutChart value={avgConcurrency} label="Streams" />
+				<Histogram data1={data} data2={[]} label1="Streams" label2="" />
 			</div>
 		{:else}
 			<p>No data available for this period</p>
