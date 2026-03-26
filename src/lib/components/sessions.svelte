@@ -86,7 +86,7 @@
 		{:else}
 			<div class="space-y-6">
 				<!-- Statistics Summary -->
-				<div class="grid grid-cols-1 gap-4">
+				<div class="grid grid-cols-1">
 					<div class="rounded-lg bg-muted/50 p-4 text-center">
 						<div class="text-2xl font-bold">{sessionCount.download + sessionCount.upload}</div>
 						<div class="text-sm text-muted-foreground">Sessions Analyzed</div>

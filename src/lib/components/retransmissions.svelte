@@ -89,18 +89,32 @@
 				{errorMessage}
 			</p>
 		{:else if sessionCount > 0}
-			<!-- Charts -->
-			<div class="grid grid-cols-1 gap-6 lg:grid-cols-[auto_1fr]">
-				<!-- Loss Trigger Distribution (Donut Chart) -->
-				<div class="space-y-4">
-					<h4 class="text-center font-medium">Retransmission Causes</h4>
-					<PieChart data={lossTriggerData} />
+			<div class="space-y-6">
+				<!-- Statistics Summary -->
+				<div class="grid grid-cols-1 gap-4 md:grid-cols-2">
+					<div class="rounded-lg bg-muted/50 p-4 text-center">
+						<div class="text-2xl font-bold">{totalPacketsLost.toLocaleString()}</div>
+						<div class="text-sm text-muted-foreground">Total packets lost</div>
+					</div>
+					<div class="rounded-lg bg-muted/50 p-4 text-center">
+						<div class="text-2xl font-bold">{avgPacketsLostPerSession.toFixed(1)}</div>
+						<div class="text-sm text-muted-foreground">Average per session</div>
+					</div>
 				</div>
 
-				<!-- Packet Loss Rate Distribution (Histogram) -->
-				<div class="space-y-4">
-					<h4 class="text-center font-medium">Loss Rate Distribution</h4>
-					<Histogram data1={packetLossRateData} data2={[]} label1="Loss Rate" label2="" />
+				<!-- Charts -->
+				<div class="grid grid-cols-1 gap-6 lg:grid-cols-[auto_1fr]">
+					<!-- Loss Trigger Distribution (Donut Chart) -->
+					<div class="space-y-4">
+						<h4 class="text-center font-medium">Retransmission Causes</h4>
+						<PieChart data={lossTriggerData} />
+					</div>
+
+					<!-- Packet Loss Rate Distribution (Histogram) -->
+					<div class="space-y-4">
+						<h4 class="text-center font-medium">Loss Rate Distribution</h4>
+						<Histogram data1={packetLossRateData} data2={[]} label1="Loss Rate" label2="" />
+					</div>
 				</div>
 			</div>
 		{:else}
