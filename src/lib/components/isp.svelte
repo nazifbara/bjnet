@@ -60,8 +60,18 @@
 				{errorMessage}
 			</p>
 		{:else if data.length > 0}
-			<!-- Chart -->
-			<GroupedBarChartMbps {data} />
+			<div class="space-y-6">
+				<!-- Statistics Summary -->
+				<div class="grid grid-cols-1">
+					<div class="rounded-lg bg-muted/50 p-4 text-center">
+						<div class="text-2xl font-bold">{data.length}</div>
+						<div class="text-sm text-muted-foreground">ISPs analyzed</div>
+					</div>
+				</div>
+
+				<!-- Chart -->
+				<GroupedBarChartMbps {data} />
+			</div>
 		{:else}
 			<p>No data available for this period</p>
 		{/if}
