@@ -66,18 +66,8 @@
 				{errorMessage}
 			</p>
 		{:else if count > 0}
-			<div class="space-y-6">
-				<!-- Statistics Summary -->
-				<div class="grid grid-cols-1 gap-4 md:grid-cols-1">
-					<div class="rounded-lg bg-muted/50 p-4 text-center">
-						<div class="text-2xl font-bold">{count}</div>
-						<div class="text-sm text-muted-foreground">Acknowledgments analyzed</div>
-					</div>
-				</div>
-
-				<!-- Chart -->
-				<Histogram data1={data} data2={[]} label1="Ack" label2="" />
-			</div>
+			<!-- Chart -->
+			<Histogram data1={data} data2={[]} label1="Ack" label2="" />
 		{:else}
 			<p>No data available for this period</p>
 		{/if}

@@ -86,15 +86,10 @@
 		{:else}
 			<div class="space-y-6">
 				<!-- Statistics Summary -->
-				<div class="grid grid-cols-1 gap-4 md:grid-cols-2">
+				<div class="grid grid-cols-1 gap-4">
 					<div class="rounded-lg bg-muted/50 p-4 text-center">
-						<div class="text-2xl font-bold">{sessionCount.download}</div>
-						<div class="text-sm text-muted-foreground">Download Sessions Analyzed</div>
-					</div>
-
-					<div class="rounded-lg bg-muted/50 p-4 text-center">
-						<div class="text-2xl font-bold">{sessionCount.upload}</div>
-						<div class="text-sm text-muted-foreground">Upload Sessions Analyzed</div>
+						<div class="text-2xl font-bold">{sessionCount.upload + sessionCount.download}</div>
+						<div class="text-sm text-muted-foreground">Tests Analyzed</div>
 					</div>
 				</div>
 
